@@ -1,0 +1,5 @@
+interface:
+  display_name: "Async .NET"
+  short_description: "Correct async, cancellation, and concurrency"
+  brand_color: "#A879FF"
+  default_prompt: "Use $dotnet-async to make this asynchronous code correct, cancellable, and deadlock-free."

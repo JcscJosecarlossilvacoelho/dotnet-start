@@ -1,0 +1,5 @@
+interface:
+  display_name: "Performance"
+  short_description: "Measure first, then make .NET fast"
+  brand_color: "#A879FF"
+  default_prompt: "Use $dotnet-performance to measure this hot path and improve it with before/after numbers."

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Blazor"
+  short_description: "Build accessible, responsive Blazor interfaces"
+  brand_color: "#A879FF"
+  default_prompt: "Use $blazor to build this interface and verify its primary flow in a browser."

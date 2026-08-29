@@ -1,0 +1,19 @@
+@namespace DotnetSexy.Components
+
+<Router AppAssembly="typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Page not found · dotnet sexy</PageTitle>
+        <LayoutView Layout="typeof(MainLayout)">
+            <main class="empty-page shell">
+                <p class="eyebrow">404 / unknown route</p>
+                <h1>This page has not<br />been compiled yet.</h1>
+                <p>Head home and pick another path.</p>
+                <a class="button button-primary" href="/">Back to home <Icon Name="arrow-right" /></a>
+            </main>
+        </LayoutView>
+    </NotFound>
+</Router>

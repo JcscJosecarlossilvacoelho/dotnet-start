@@ -1,0 +1,5 @@
+interface:
+  display_name: "ASP.NET Core"
+  short_description: "Build robust modern .NET APIs and services"
+  brand_color: "#A879FF"
+  default_prompt: "Use $aspnet-core to build this API feature and verify its HTTP contract."

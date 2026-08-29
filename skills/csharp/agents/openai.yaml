@@ -1,0 +1,5 @@
+interface:
+  display_name: "C#"
+  short_description: "Write idiomatic, modern, warning-clean C#"
+  brand_color: "#A879FF"
+  default_prompt: "Use $csharp to write this in idiomatic modern C# and keep the build warning-clean."

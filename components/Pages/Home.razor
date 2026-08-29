@@ -1,0 +1,128 @@
+@namespace DotnetSexy.Components.Pages
+@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>dotnet sexy · Make .NET sexy</PageTitle>
+
+<main>
+    <section class="hero shell">
+        <div class="hero-orbit orbit-one"></div>
+        <div class="hero-orbit orbit-two"></div>
+        <div class="hero-copy">
+            <div class="status-pill"><span></span> Open source · community-owned</div>
+            <h1>Make<br /><em>.NET</em> sexy.</h1>
+            <p>The community front door to modern .NET. One opinionated stack, practical docs, and a path from <code>dotnet new</code> to production — the same way Laravel and Node.js greet you at the door.</p>
+            <div class="hero-install">
+                <CodeBlock Code="dotnet new webapi -n MyApp" Label="GET STARTED" />
+            </div>
+            <div class="hero-actions">
+                <a class="button button-primary" href="/docs">Read the docs <Icon Name="arrow-right" /></a>
+                <a class="button button-ghost" href="https://github.com/dotnet-sexy/dotnet-sexy"><Icon Name="github" /> GitHub</a>
+            </div>
+        </div>
+
+        <div class="hero-workbench" aria-label="Preview of the documentation experience">
+            <div class="workbench-top">
+                <div class="window-dots"><span></span><span></span><span></span></div>
+                <span>docs / start / getting-started.md</span>
+                <span class="branch-label"><Icon Name="branch" /> main</span>
+            </div>
+            <div class="workbench-body">
+                <aside>
+                    <span class="tree-title">START</span>
+                    <b><span>01</span> First endpoint</b>
+                    <span><i>02</i> Database</span>
+                    <span><i>03</i> Auth</span>
+                    <span class="tree-title second">SHIP</span>
+                    <span><i>04</i> Aspire</span>
+                    <span><i>05</i> Production</span>
+                </aside>
+                <div class="workbench-document">
+                    <div class="doc-meta"><span>GUIDE · 6 MIN</span><span class="verified"><Icon Name="check" /> Community reviewed</span></div>
+                    <h2>Your first<br />endpoint.</h2>
+                    <p>From zero to a typed, testable API that is ready to grow.</p>
+                    <CodeBlock Code="dotnet new webapi -n MyApp" Label="TERMINAL" />
+                    <a class="agent-prompt" href="/docs/start/getting-started">
+                        <div><Icon Name="wand" /><span><b>Build this with an agent</b><small>Prompt for Claude or Codex</small></span></div>
+                        <Icon Name="arrow-right" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="signal-strip" aria-label="Project principles">
+        <div class="shell">
+            <span><Icon Name="check" /> C# end to end</span>
+            <span><Icon Name="check" /> One recommended stack</span>
+            <span><Icon Name="check" /> Docs you can run</span>
+            <span><Icon Name="check" /> Maintained on GitHub</span>
+        </div>
+    </section>
+
+    <section class="path-section shell">
+        <div class="section-intro">
+            <div><p class="eyebrow">THE FRONT DOOR</p><h2>Less noise.<br />Better defaults.</h2></div>
+            <p>.NET can do everything. This site picks the path we would use today to turn an idea into a running product — then gets out of the way.</p>
+        </div>
+
+        <div class="path-grid">
+            <a class="path-card featured" href="/docs">
+                <span class="card-index">01 / DOCS</span>
+                <div class="path-icon"><Icon Name="book" /></div>
+                <h3>Documentation<br />that ships.</h3>
+                <p>Short guides, complete examples, and the why behind each choice — written by people who build with .NET every day.</p>
+                <span class="card-link">Open the docs <Icon Name="arrow-right" /></span>
+            </a>
+            <a class="path-card" href="/skills">
+                <span class="card-index">02 / SKILLS</span>
+                <div class="path-icon"><Icon Name="spark" /></div>
+                <h3>Context for<br />your agent.</h3>
+                <p>Installable skills so Claude and Codex make better calls on APIs, Blazor, tests, and .NET architecture.</p>
+                <span class="card-link">Browse skills <Icon Name="arrow-right" /></span>
+            </a>
+            <a class="path-card" href="https://github.com/dotnet-sexy/dotnet-sexy">
+                <span class="card-index">03 / CONTRIBUTE</span>
+                <div class="path-icon"><Icon Name="users" /></div>
+                <h3>The docs are<br />the product.</h3>
+                <p>Every page lives in Markdown. Fix it, improve it, or propose a better default with a pull request.</p>
+                <span class="card-link">Contribute on GitHub <Icon Name="arrow-up-right" /></span>
+            </a>
+        </div>
+    </section>
+
+    <section class="stack-showcase" id="stack">
+        <div class="shell stack-layout">
+            <div class="stack-copy">
+                <p class="eyebrow">THE RECOMMENDED STACK</p>
+                <h2>One stack.<br /><em>Chosen well.</em></h2>
+                <p>Not the only way to build with .NET. The clearest way to start and reach production without switching languages halfway through.</p>
+                <a href="/docs" class="text-link">See it in the docs <Icon Name="arrow-right" /></a>
+            </div>
+            <div class="stack-layers">
+                <a class="stack-layer" href="/docs/build/blazor"><span>01</span><div><small>UI</small><b>Blazor</b></div><p>Modern web, still C#</p><Icon Name="arrow-right" /></a>
+                <a class="stack-layer" href="/docs/start/getting-started"><span>02</span><div><small>BACKEND</small><b>ASP.NET Core</b></div><p>Fast, typed APIs</p><Icon Name="arrow-right" /></a>
+                <a class="stack-layer" href="/docs/start/database"><span>03</span><div><small>DATA</small><b>EF Core</b></div><p>Productive persistence</p><Icon Name="arrow-right" /></a>
+                <a class="stack-layer" href="/docs/build/aspire"><span>04</span><div><small>CLOUD</small><b>.NET Aspire</b></div><p>Observability included</p><Icon Name="arrow-right" /></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="community-section shell" id="community">
+        <div class="community-mark"><span>&lt;/&gt;</span></div>
+        <p class="eyebrow">BUILT IN THE OPEN</p>
+        <h2>This is not a company site.<br /><em>It belongs to whoever<br />makes it better.</em></h2>
+        <p class="community-lead">Documentation is code: transparent, versioned, and open to review. Found a clearer explanation? Change it.</p>
+        <div class="community-actions">
+            <a class="button button-light" href="https://github.com/dotnet-sexy/dotnet-sexy"><Icon Name="github" /> View on GitHub</a>
+            <a class="button button-ghost" href="/docs">Get started</a>
+        </div>
+        <div class="contribution-flow">
+            <div><span>01</span><b>Find a page</b><small>Everything lives in /docs</small></div>
+            <Icon Name="arrow-right" />
+            <div><span>02</span><b>Edit on GitHub</b><small>Markdown, no extra setup</small></div>
+            <Icon Name="arrow-right" />
+            <div><span>03</span><b>Open a PR</b><small>The community reviews with you</small></div>
+        </div>
+    </section>
+</main>

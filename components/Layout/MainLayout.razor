@@ -1,0 +1,39 @@
+@namespace DotnetSexy.Components.Layout
+@inherits LayoutComponentBase
+
+<div class="site-frame">
+    <header class="site-header">
+        <div class="header-inner shell">
+            <a class="brand" href="/" aria-label="dotnet sexy — home">
+                <span class="brand-glyph">.n</span>
+                <span>dotnet<span>sexy</span></span>
+            </a>
+
+            <nav class="main-nav" aria-label="Primary navigation">
+                <NavLink href="/docs">Docs</NavLink>
+                <NavLink href="/skills">Skills</NavLink>
+                <a href="/#stack">Stack</a>
+                <a href="/#community">Community</a>
+            </nav>
+
+            <div class="header-actions">
+                <SearchTrigger />
+                <a class="github-link" href="https://github.com/dotnet-sexy/dotnet-sexy" target="_blank" rel="noreferrer" aria-label="Open the project on GitHub">
+                    <Icon Name="github" />
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <SearchPalette />
+    @Body
+
+    <footer class="site-footer">
+        <div class="shell footer-grid">
+            <a class="brand" href="/"><span class="brand-glyph">.n</span><span>dotnet<span>sexy</span></span></a>
+            <p>Make .NET sexy. Open source, written in C#, owned by the community.</p>
+            <div class="footer-links"><a href="/docs">Docs</a><a href="/skills">Skills</a><a href="https://github.com/dotnet-sexy/dotnet-sexy">GitHub</a></div>
+        </div>
+    </footer>
+</div>

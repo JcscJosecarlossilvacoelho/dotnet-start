@@ -1,0 +1,5 @@
+interface:
+  display_name: "Entity Framework Core"
+  short_description: "Design safe and efficient EF Core persistence"
+  brand_color: "#A879FF"
+  default_prompt: "Use $ef-core to design this persistence change and verify its migration and queries."

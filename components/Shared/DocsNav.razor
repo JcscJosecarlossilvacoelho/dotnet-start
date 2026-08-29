@@ -1,0 +1,28 @@
+@namespace DotnetSexy.Components.Shared
+@inject DocsLibrary Library
+
+<aside class="docs-sidebar">
+    <SearchTrigger Class="docs-search" />
+    <nav aria-label="Documentation index">
+        @foreach (var group in Library.Sections)
+        {
+            <p>@group.Label</p>
+            @foreach (var doc in group.Documents)
+            {
+                <a class="@(doc.Slug == CurrentSlug ? "active" : null)" href="@doc.Href">
+                    <span>@doc.Number.ToString("00")</span> @doc.Title
+                </a>
+            }
+        }
+    </nav>
+    <div class="sidebar-community">
+        <Icon Name="users" />
+        <b>Missing something?</b>
+        <span>Every page here is a Markdown file. Edit it and open a pull request.</span>
+        <a href="https://github.com/dotnet-sexy/dotnet-sexy/tree/main/docs">Improve the docs <Icon Name="arrow-up-right" /></a>
+    </div>
+</aside>
+
+@code {
+    [Parameter] public string? CurrentSlug { get; set; }
+}

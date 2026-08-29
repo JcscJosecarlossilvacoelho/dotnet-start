@@ -1,0 +1,36 @@
+@namespace DotnetSexy.Components.Shared
+@inject IJSRuntime JS
+
+<div class="code-block @Class">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <div class="code-label"><span>@Label</span><span>@Language</span></div>
+    }
+    <div class="code-line">
+        @if (ShowPrompt) { <span class="code-prompt">❯</span> }
+        <code>@Code</code>
+        <button class="copy-button" type="button" @onclick="CopyAsync" aria-label="Copy command">
+            <Icon Name="@(Copied ? "check" : "copy")" />
+            <span>@(Copied ? "Copied" : "Copy")</span>
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Code { get; set; } = "";
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Language { get; set; } = "bash";
+    [Parameter] public string Class { get; set; } = "";
+    [Parameter] public bool ShowPrompt { get; set; } = true;
+    private bool Copied { get; set; }
+
+    private async Task CopyAsync()
+    {
+        if (await JS.InvokeAsync<bool>("dotnetSexy.copy", Code))
+        {
+            Copied = true;
+            await Task.Delay(1600);
+            Copied = false;
+        }
+    }
+}

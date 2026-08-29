@@ -1,0 +1,103 @@
+@namespace DotnetSexy.Components.Pages
+@page "/docs/{*Slug}"
+@inject DocsLibrary Library
+@inject NavigationManager Nav
+
+@if (Document is null)
+{
+    <PageTitle>Missing guide · Make .NET sexy</PageTitle>
+    <main class="empty-page shell">
+        <p class="eyebrow">DOCS / NOT FOUND</p>
+        <h1>This guide is not here yet.</h1>
+        <p>Every page is a Markdown file under <code>docs/</code>. Add it and open a pull request — or head back to the index.</p>
+        <a class="button button-primary" href="/docs">Back to docs <Icon Name="arrow-right" /></a>
+    </main>
+}
+else
+{
+    <PageTitle>@Document.Title · Make .NET sexy</PageTitle>
+    <main class="docs-shell shell">
+        <DocsNav CurrentSlug="@Document.Slug" />
+
+        <article class="doc-article">
+            <div class="doc-breadcrumb">
+                <a href="/docs">Docs</a><span>/</span>
+                <span>@SectionTitle</span><span>/</span>
+                <b>@Document.Title</b>
+            </div>
+            <header class="article-header">
+                <div class="doc-meta">
+                    <span>GUIDE</span>
+                    <span class="verified"><Icon Name="check" /> Community owned</span>
+                </div>
+                <h1>@Document.Title</h1>
+                @if (!string.IsNullOrWhiteSpace(Document.Description))
+                {
+                    <p>@Document.Description</p>
+                }
+                <div class="article-actions">
+                    <a href="@Document.EditUrl"><Icon Name="branch" /> Edit this page</a>
+                    <span>@Document.RelativePath</span>
+                </div>
+            </header>
+
+            <div class="markdown-body">
+                @((MarkupString)Document.Html)
+            </div>
+
+            <nav class="doc-pager" aria-label="Adjacent guides">
+                @if (Previous is not null)
+                {
+                    <a href="@Previous.Href"><small>PREVIOUS</small><b>@Previous.Title</b></a>
+                }
+                else
+                {
+                    <a href="/docs"><small>INDEX</small><b>All docs</b></a>
+                }
+                @if (Next is not null)
+                {
+                    <a class="next" href="@Next.Href"><small>NEXT</small><b>@Next.Title</b></a>
+                }
+            </nav>
+        </article>
+
+        <aside class="docs-toc">
+            <p>ON THIS PAGE</p>
+            @foreach (var heading in Document.Headings)
+            {
+                <a href="#@heading.Id" class="@(heading.Id == ActiveHeading ? "active" : null)">@heading.Text</a>
+            }
+            <DocsFeedback Slug="@Document.Slug" />
+        </aside>
+    </main>
+}
+
+@code {
+    [Parameter] public string? Slug { get; set; }
+
+    private DocEntry? Document { get; set; }
+    private DocEntry? Previous { get; set; }
+    private DocEntry? Next { get; set; }
+    private string SectionTitle { get; set; } = "";
+    private string? ActiveHeading { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrWhiteSpace(Slug) || Slug == "/")
+        {
+            Nav.NavigateTo("/docs");
+            return;
+        }
+
+        Document = Library.Find(Slug);
+        if (Document is null)
+        {
+            Previous = Next = null;
+            return;
+        }
+
+        (Previous, Next) = Library.Neighbours(Document);
+        ActiveHeading = Document.Headings.FirstOrDefault()?.Id;
+        SectionTitle = Library.FindSection(Document.SectionId)?.Title ?? Document.SectionId;
+    }
+}

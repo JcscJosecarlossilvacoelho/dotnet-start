@@ -1,0 +1,92 @@
+# dotnet sexy
+
+The community-driven front door to modern .NET: opinionated documentation, runnable examples, prompts for coding agents, and installable .NET skills.
+
+## Run locally
+
+Requires the .NET 10 SDK.
+
+```bash
+dotnet restore
+dotnet run --project dotnet-sexy.csproj
+```
+
+The UI is a Blazor Web App with interactive server components. Its main routes are `/`, `/docs`, and `/skills`.
+
+## How the documentation works
+
+Every page under `/docs` is a Markdown file in `docs/`. Nothing about a page is hardcoded in a component: add a file, and the site publishes it.
+
+```
+docs/
+  <section>/_section.md     # section title, description, and order in the sidebar
+  <section>/<page>.md       # one documentation page → /docs/<section>/<page>
+```
+
+Each file starts with front matter:
+
+```markdown
+---
+title: Minimal APIs
+description: The endpoint model — parameter binding, results, groups, and filters.
+order: 20
+---
+```
+
+`title` and `description` drive the sidebar, the index cards, and search. `order` sorts the page inside its section (lower first). The `## ` headings become the "on this page" rail, and the "Edit this page" link points at the file on GitHub.
+
+Current sections: `start`, `csharp`, `runtime`, `web`, `data`, `ui`, `testing`, `ops`, `architecture`, `reference`.
+
+## Content belongs to the community
+
+Documentation lives in `docs/` as Markdown. Every guide should include a useful Claude/Codex prompt as well as commands a human can run directly.
+
+Installable skills live in `skills/`:
+
+| Skill | Covers |
+| --- | --- |
+| `csharp` | The language: nullability, records, pattern matching, LINQ, exceptions |
+| `aspnet-core` | Minimal APIs, controllers, DI, validation, auth, problem details |
+| `blazor` | Render modes, components, forms, accessibility, interop |
+| `ef-core` | Modeling, queries, migrations, transactions, concurrency |
+| `dotnet-async` | Async correctness, cancellation, concurrency, background services |
+| `dotnet-testing` | Test design, fakes, `WebApplicationFactory`, Testcontainers |
+| `dotnet-observability` | Structured logging, OpenTelemetry, health checks, resilience |
+| `dotnet-performance` | Benchmarking, allocations, caching, Native AOT |
+
+Install one with `npx skills add dotnet-sexy/dotnet-sexy --skill <name>`, or all of them by dropping the flag.
+
+## Deployment
+
+This is a Blazor **Server** app: it holds a SignalR circuit per visitor and reads
+`docs/*.md` from disk at runtime. It needs a long-lived ASP.NET Core process, so
+static hosts such as GitHub Pages cannot serve it.
+
+`.github/workflows/deploy.yml` builds the container and pushes it to GitHub
+Container Registry on every push to `main`:
+
+```
+ghcr.io/<owner>/dotnet-sexy:latest
+```
+
+That image runs anywhere that takes a container — Fly.io, Azure Container Apps,
+Render, Cloud Run, or a plain VPS:
+
+```bash
+docker run -p 8080:8080 ghcr.io/<owner>/dotnet-sexy:latest
+```
+
+### Fly.io
+
+`fly.toml` is ready to go. Pick a unique app name, then:
+
+```bash
+fly launch --no-deploy --copy-config
+gh secret set FLY_API_TOKEN --body "$(fly tokens create deploy)"
+```
+
+Once the secret exists, the `fly` job in the deploy workflow stops skipping and
+every push to `main` ships. `min_machines_running = 1` is deliberate — a suspended
+machine drops the SignalR circuits of anyone currently reading.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.

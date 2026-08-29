@@ -1,0 +1,33 @@
+@namespace DotnetSexy.Components.Pages
+@page "/skills"
+@rendermode InteractiveServer
+
+<PageTitle>Skills · Make .NET sexy</PageTitle>
+
+<main>
+    <section class="skills-hero shell">
+        <div class="status-pill"><span></span> Open, versioned skills</div>
+        <h1>Give your agent<br /><em>.NET</em> context.</h1>
+        <p>Specialized instructions so Claude and Codex make better calls in .NET projects — installable in one command, auditable on GitHub.</p>
+        <div class="skills-install"><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy" Label="INSTALL ALL" /></div>
+    </section>
+
+    <section class="skills-catalog shell">
+        <div class="section-intro compact"><div><p class="eyebrow">CATALOG</p><h2>Pick a specialist.</h2></div><p>Each skill is focused, readable, and designed to work without turning your agent into a black box.</p></div>
+        <div class="skill-grid">
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="terminal" /></span><span class="version">v1.0</span></div><p class="skill-type">BACKEND</p><h3>aspnet-core</h3><p>Modern APIs, Minimal APIs, middleware, authentication, and production patterns.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill aspnet-core" ShowPrompt="false" /><a href="/docs/start/getting-started">Read the docs <Icon Name="arrow-right" /></a></article>
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="spark" /></span><span class="version">v1.0</span></div><p class="skill-type">FRONTEND</p><h3>blazor</h3><p>Components, render modes, state, forms, and accessible UI in Blazor.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill blazor" ShowPrompt="false" /><a href="/docs/ui/blazor">Read the docs <Icon Name="arrow-right" /></a></article>
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="package" /></span><span class="version">v1.0</span></div><p class="skill-type">DATA</p><h3>ef-core</h3><p>Modeling, migrations, efficient queries, and explicit persistence decisions.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill ef-core" ShowPrompt="false" /><a href="/docs/start/database">Read the docs <Icon Name="arrow-right" /></a></article>
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="wand" /></span><span class="version">v1.0</span></div><p class="skill-type">LANGUAGE</p><h3>csharp</h3><p>Nullable types, records, pattern matching, LINQ, and idiomatic modern C#.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill csharp" ShowPrompt="false" /><a href="/docs/csharp/idioms">Read the docs <Icon Name="arrow-right" /></a></article>
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="branch" /></span><span class="version">v1.0</span></div><p class="skill-type">CONCURRENCY</p><h3>dotnet-async</h3><p>Async correctness, cancellation, parallelism, and background services.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill dotnet-async" ShowPrompt="false" /><a href="/docs/csharp/async-await">Read the docs <Icon Name="arrow-right" /></a></article>
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="check" /></span><span class="version">v1.0</span></div><p class="skill-type">QUALITY</p><h3>dotnet-testing</h3><p>Test design, fakes over mocks, WebApplicationFactory, and Testcontainers.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill dotnet-testing" ShowPrompt="false" /><a href="/docs/testing/test-design">Read the docs <Icon Name="arrow-right" /></a></article>
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="search" /></span><span class="version">v1.0</span></div><p class="skill-type">OPERATIONS</p><h3>dotnet-observability</h3><p>Structured logging, OpenTelemetry, health checks, and resilience.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill dotnet-observability" ShowPrompt="false" /><a href="/docs/ops/observability">Read the docs <Icon Name="arrow-right" /></a></article>
+            <article class="skill-card"><div class="skill-top"><span class="path-icon"><Icon Name="spark" /></span><span class="version">v1.0</span></div><p class="skill-type">PERFORMANCE</p><h3>dotnet-performance</h3><p>Benchmarking, allocations, spans, caching, and Native AOT.</p><CodeBlock Code="npx skills add dotnet-sexy/dotnet-sexy --skill dotnet-performance" ShowPrompt="false" /><a href="/docs/runtime/benchmarking">Read the docs <Icon Name="arrow-right" /></a></article>
+        </div>
+    </section>
+
+    <section class="skill-principles shell">
+        <p class="eyebrow">HOW IT WORKS</p><h2>Context, not magic.</h2>
+        <div class="principle-grid"><div><span>01</span><h3>Read first</h3><p>The skill tells the agent to understand the project before proposing changes.</p></div><div><span>02</span><h3>Decide with criteria</h3><p>Recommendations explain trade-offs and respect the .NET version in use.</p></div><div><span>03</span><h3>Always verify</h3><p>Build, tests, and inspecting the result are part of the work — not an afterthought.</p></div></div>
+    </section>
+</main>

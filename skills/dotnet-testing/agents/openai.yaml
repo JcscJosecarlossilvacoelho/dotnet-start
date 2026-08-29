@@ -1,0 +1,5 @@
+interface:
+  display_name: ".NET Testing"
+  short_description: "Tests that fail for the right reason"
+  brand_color: "#A879FF"
+  default_prompt: "Use $dotnet-testing to cover this behavior with tests that fail before the fix."

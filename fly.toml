@@ -1,0 +1,27 @@
+# Fly.io app definition. Rename `app` to something unique, then:
+#   fly launch --no-deploy --copy-config
+#   gh secret set FLY_API_TOKEN --body "$(fly tokens create deploy)"
+# After that every push to main deploys via .github/workflows/deploy.yml.
+app = "dotnet-sexy"
+primary_region = "cdg"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Blazor Server holds a SignalR circuit per visitor, so the machine must not
+  # be stopped out from under a connected reader.
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 1
+
+[http_service.concurrency]
+  type = "connections"
+  soft_limit = 200
+  hard_limit = 250
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

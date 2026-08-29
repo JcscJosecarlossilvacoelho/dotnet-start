@@ -1,0 +1,16 @@
+@namespace DotnetSexy.Components.Shared
+
+@*
+    A shimmering placeholder block. Used wherever real content arrives a beat after
+    the layout does, so the page never reflows and never flashes the wrong state.
+*@
+<span class="skeleton @Class"
+      style="width:@Width;height:@Height;border-radius:@Radius"
+      aria-hidden="true"></span>
+
+@code {
+    [Parameter] public string Width { get; set; } = "100%";
+    [Parameter] public string Height { get; set; } = "12px";
+    [Parameter] public string Radius { get; set; } = "4px";
+    [Parameter] public string? Class { get; set; }
+}

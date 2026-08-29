@@ -1,0 +1,5 @@
+interface:
+  display_name: "Observability"
+  short_description: "Logging, tracing, metrics, and resilience"
+  brand_color: "#A879FF"
+  default_prompt: "Use $dotnet-observability to make this service diagnosable and resilient in production."

@@ -1,0 +1,14 @@
+@namespace DotnetSexy.Components.Shared
+@inject DocsSearchState Search
+@rendermode InteractiveServer
+
+<button type="button" class="@Class" @onclick="Search.Open" aria-label="Search documentation">
+    <Icon Name="search" />
+    <span>Search docs</span>
+    <kbd>⌘ K</kbd>
+</button>
+
+@code {
+    /// <summary>The header and the docs sidebar style the same trigger differently.</summary>
+    [Parameter] public string Class { get; set; } = "search-trigger";
+}

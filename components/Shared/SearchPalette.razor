@@ -1,0 +1,144 @@
+@namespace DotnetSexy.Components.Shared
+@inject DocsLibrary Library
+@inject DocsSearchState Search
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+@implements IDisposable
+@rendermode InteractiveServer
+
+@if (Search.IsOpen)
+{
+    <div class="search-overlay" @onclick="Close">
+        <div class="search-dialog" role="dialog" aria-modal="true" aria-label="Search documentation" @onclick:stopPropagation="true">
+            <div class="search-dialog-bar">
+                <Icon Name="search" />
+                <input @ref="QueryInput"
+                       @bind="Query"
+                       @bind:event="oninput"
+                       @onkeydown="OnQueryKey"
+                       placeholder="Search docs..."
+                       aria-label="Search documentation"
+                       autocomplete="off"
+                       spellcheck="false" />
+                <kbd>ESC</kbd>
+            </div>
+            <div class="search-results" role="listbox">
+                @if (Results.Count == 0)
+                {
+                    <p class="search-empty">No pages match "@Query".</p>
+                }
+                else
+                {
+                    @foreach (var (doc, index) in Results.Select((d, i) => (d, i)))
+                    {
+                        <a class="search-hit @(index == ActiveIndex ? "active" : null)"
+                           href="@doc.Href"
+                           role="option"
+                           aria-selected="@(index == ActiveIndex)"
+                           @onclick="Close">
+                            <b>@doc.Title</b>
+                            <span>@doc.Description</span>
+                            <small>@doc.Slug</small>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string _query = "";
+    private string Query
+    {
+        get => _query;
+        set
+        {
+            if (_query == value) return;
+            _query = value;
+            ActiveIndex = 0;
+        }
+    }
+
+    private int ActiveIndex { get; set; }
+    private ElementReference QueryInput;
+    private bool _keysBound;
+    private bool _focusPending;
+    private DotNetObjectReference<SearchPalette>? _self;
+    private IReadOnlyList<DocEntry> Results => Library.Search(Query, 8);
+
+    protected override void OnInitialized() => Search.Changed += OnSearchChanged;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_keysBound)
+        {
+            _keysBound = true;
+            _self = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("dotnetSexy.bindSearchKeys", _self);
+        }
+
+        if (_focusPending && Search.IsOpen)
+        {
+            _focusPending = false;
+            try { await QueryInput.FocusAsync(); }
+            catch (JSException) { }
+        }
+    }
+
+    private void OnSearchChanged()
+    {
+        if (Search.IsOpen)
+        {
+            Query = "";
+            ActiveIndex = 0;
+            _focusPending = true;
+        }
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void Close() => Search.Close();
+
+    private void OnQueryKey(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+        {
+            Close();
+            return;
+        }
+
+        if (Results.Count == 0) return;
+
+        if (args.Key == "ArrowDown")
+        {
+            ActiveIndex = (ActiveIndex + 1) % Results.Count;
+        }
+        else if (args.Key == "ArrowUp")
+        {
+            ActiveIndex = (ActiveIndex - 1 + Results.Count) % Results.Count;
+        }
+        else if (args.Key is "Enter")
+        {
+            var target = Results.ElementAtOrDefault(ActiveIndex);
+            if (target is not null)
+            {
+                Close();
+                Nav.NavigateTo(target.Href);
+            }
+        }
+    }
+
+    [JSInvokable]
+    public void ToggleFromKeyboard() => Search.Toggle();
+
+    [JSInvokable]
+    public void CloseFromKeyboard() => Search.Close();
+
+    public void Dispose()
+    {
+        Search.Changed -= OnSearchChanged;
+        try { _ = JS.InvokeVoidAsync("dotnetSexy.unbindSearchKeys"); }
+        catch { }
+        _self?.Dispose();
+    }
+}
