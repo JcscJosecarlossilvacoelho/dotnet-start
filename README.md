@@ -1,6 +1,45 @@
 # .NET Start
 
-The community-driven front door to modern .NET: opinionated documentation, runnable examples, prompts for coding agents, and installable .NET skills.
+**.NET starts here.** The community-driven front door to modern .NET: opinionated
+documentation, runnable examples, prompts for coding agents, and installable .NET skills.
+
+[![.NET Start — the community front door to modern .NET](.github/assets/hero.png)](https://dotnet-start.onrender.com)
+
+**[Open the site →](https://dotnet-start.onrender.com)**
+
+---
+
+## 📝 Contribute to the docs
+
+**This is the part that matters.** Every page on the site is a Markdown file in
+[`docs/`](docs/) — there is no CMS, no database, and no component to edit.
+**Adding a file publishes a page.** No C# knowledge required.
+
+```bash
+docs/start/my-guide.md   ->   /docs/start/my-guide
+```
+
+Three steps:
+
+1. **Fork it**, and add or edit a `.md` file under `docs/<section>/`.
+2. **Start it with front matter** — `title`, `description`, and an `order`:
+   ```markdown
+   ---
+   title: Short page title
+   description: One sentence describing what the page covers.
+   order: 30
+   ---
+   ```
+3. **Open a pull request** saying what became clearer.
+
+> **📖 Read [docs/README.md](docs/README.md) first.** It is the full reference:
+> section layout, front matter, heading anchors, how search ranks a page, local
+> preview, and a checklist to run before opening the pull request.
+
+Typos, clearer examples, better defaults, and missing steps all count. Small
+improvements are the ones that add up.
+
+---
 
 ## Run locally
 
@@ -36,6 +75,9 @@ order: 20
 `title` and `description` drive the sidebar, the index cards, and search. `order` sorts the page inside its section (lower first). The `## ` headings become the "on this page" rail, and the "Edit this page" link points at the file on GitHub.
 
 Current sections: `start`, `csharp`, `runtime`, `web`, `data`, `ui`, `testing`, `ops`, `architecture`, `reference`.
+
+The rules above are summarised here; [docs/README.md](docs/README.md) is the
+authoritative version and explains the edge cases.
 
 ## Content belongs to the community
 
