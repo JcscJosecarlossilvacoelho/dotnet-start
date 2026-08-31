@@ -130,7 +130,11 @@ button.search-trigger { appearance: none; width: 190px; }
 
 /* Documentation */
 .docs-shell { display: grid; grid-template-columns: 225px minmax(0,720px) 175px; gap: 58px; align-items: start; }
-.docs-sidebar, .docs-toc { position: sticky; top: 24px; padding-top: 42px; height: calc(100vh - 24px); }
+.docs-sidebar, .docs-toc { position: sticky; top: 24px; padding-top: 42px; padding-bottom: 24px; height: calc(100vh - 24px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #2f2c36 transparent; }
+.docs-sidebar::-webkit-scrollbar, .docs-toc::-webkit-scrollbar { width: 6px; }
+.docs-sidebar::-webkit-scrollbar-thumb, .docs-toc::-webkit-scrollbar-thumb { background: #2f2c36; border-radius: 3px; }
+.docs-sidebar:hover::-webkit-scrollbar-thumb, .docs-toc:hover::-webkit-scrollbar-thumb { background: #46434e; }
+.docs-sidebar::-webkit-scrollbar-track, .docs-toc::-webkit-scrollbar-track { background: transparent; }
 .docs-sidebar { border-right: 1px solid var(--line-soft); padding-right: 27px; }
 .docs-search { width: 100%; height: 38px; padding: 0 10px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 8px; color: #8f8b95; font-size: 11px; background: rgba(255,255,255,.025); appearance: none; cursor: pointer; text-align: left; }.docs-search .icon { width: 14px; }.docs-search kbd { margin-left: auto; border: 1px solid var(--line); padding: 2px 5px; border-radius: 4px; color: #605c65; font: 9px var(--mono); }
 .docs-sidebar nav { margin-top: 34px; display: flex; flex-direction: column; gap: 3px; }.docs-sidebar nav p, .docs-toc > p { margin: 25px 0 8px; color: #5f5b65; font: 600 8px var(--mono); letter-spacing: .14em; }.docs-sidebar nav a { min-height: 36px; display: flex; align-items: center; gap: 11px; margin-left: -12px; padding: 0 12px; border-left: 2px solid transparent; color: #8e8a94; font-size: 11px; }.docs-sidebar nav a span { color: #514d56; font: 8px var(--mono); }.docs-sidebar nav a.active { border-left-color: var(--violet); color: white; background: rgba(168,121,255,.07); }
