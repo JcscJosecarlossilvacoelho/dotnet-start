@@ -151,6 +151,9 @@
 }
 
 * { box-sizing: border-box; }
+/* A class that sets display would otherwise win over the hidden attribute, and
+   several elements here are toggled by app.js with el.hidden. */
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--text); background: var(--bg); font-family: var(--sans); font-size: 16px; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
@@ -379,6 +382,11 @@ button.search-trigger { appearance: none; width: 190px; }
 .toc-skeleton { display: flex; flex-direction: column; gap: 14px; }
 .docs-navigating .doc-article, .docs-navigating .docs-toc { opacity: .85; }
 @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; background: #1d1c22; } }
+
+/* --- copy button state (swapped by app.js, no round-trip) ----------------- */
+.copy-button .copy-done { display: none; }
+.copy-button.is-copied .copy-idle { display: none; }
+.copy-button.is-copied .copy-done { display: inline-block; color: var(--green); }
 
 /* --- support link --------------------------------------------------------- */
 .coffee-link { height: 39px; display: flex; align-items: center; gap: 9px; padding: 0 12px; border: 1px solid rgba(168,121,255,.35); border-radius: 9px; background: rgba(168,121,255,.08); color: #d9cdf5; font-size: 12px; white-space: nowrap; }

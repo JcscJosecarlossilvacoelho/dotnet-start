@@ -28,11 +28,11 @@ if (behindProxy)
 }
 
 builder.Services.AddSingleton<DocsLibrary>();
-builder.Services.AddScoped<DocsSearchState>();
 
-builder.Services
-    .AddRazorComponents()
-    .AddInteractiveServerComponents();
+// Every component renders statically. Search, the feedback prompt and the copy
+// buttons are plain JavaScript over data attributes, so there is no circuit to
+// keep alive and the whole site can be crawled to flat HTML for a static host.
+builder.Services.AddRazorComponents();
 
 var app = builder.Build();
 
@@ -92,9 +92,25 @@ app.UseAntiforgery();
 
 app.MapGet("/healthz", () => Results.Text("ok"));
 
+// The client-side search index. Written to a file by the prerender script and
+// served from the CDN there; served live here.
+app.MapGet("/search-index.json", (DocsLibrary library) => Results.Json(
+    library.AllDocuments.Select(doc => new
+    {
+        t = doc.Title,
+        d = doc.Description,
+        s = doc.Slug,
+        h = doc.Href,
+    })));
+
+// Every URL the site publishes: what the prerender crawler walks, and a plain
+// sitemap for crawlers that want one.
+app.MapGet("/sitemap.txt", (DocsLibrary library) => Results.Text(
+    string.Join('\n', new[] { "/", "/docs", "/skills" }
+        .Concat(library.AllDocuments.Select(doc => doc.Href)))));
+
 app.MapStaticAssets();
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>();
 
 // Before the first request, not during it.
 app.Services.GetRequiredService<DocsLibrary>().Warm();

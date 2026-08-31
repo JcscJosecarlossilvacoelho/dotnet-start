@@ -100,9 +100,36 @@ Install one with `npx skills add JcscJosecarlossilvacoelho/dotnet-start --skill 
 
 ## Deployment
 
-This is a Blazor **Server** app: it holds a SignalR circuit per visitor and reads
-`docs/*.md` from disk at runtime. It needs a long-lived ASP.NET Core process, so
-static hosts such as GitHub Pages cannot serve it.
+Every component renders statically — search, the feedback prompt and the copy
+buttons are plain JavaScript over data attributes, with no SignalR circuit — so
+the site can either run as an ASP.NET Core app or be crawled to flat HTML and
+served from a CDN.
+
+### Static build (Vercel, Pages, any CDN)
+
+```bash
+bash scripts/prerender.sh          # -> dist/
+```
+
+That publishes the app, boots it, walks `/sitemap.txt`, and writes every route to
+`dist/<route>/index.html` along with the assets, `search-index.json`, and a
+`404.html`. The result is ~76 pages that need no server at all.
+
+`.github/workflows/vercel.yml` does this on every push to `main` and uploads the
+result with `vercel deploy --prebuilt` — Vercel's build image has no .NET SDK, so
+the crawl happens in CI. It stays skipped until the secrets exist:
+
+```bash
+npx vercel link
+gh secret set VERCEL_TOKEN
+gh secret set VERCEL_ORG_ID       # both are in .vercel/project.json
+gh secret set VERCEL_PROJECT_ID
+```
+
+### Container
+
+The app still runs as a normal ASP.NET Core service if you would rather host it
+that way.
 
 `.github/workflows/deploy.yml` builds the container and pushes it to GitHub
 Container Registry on every push to `main`:

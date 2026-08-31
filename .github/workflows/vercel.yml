@@ -1,0 +1,80 @@
+name: Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Vercel's build image has no .NET SDK, so the site is crawled to static
+      # HTML here and uploaded with --prebuilt.
+      - name: Prerender the site
+        run: bash scripts/prerender.sh "$GITHUB_WORKSPACE/dist"
+
+      - name: Check the crawl produced a real site
+        run: |
+          pages=$(find dist -name index.html | wc -l)
+          echo "$pages pages"
+          [ "$pages" -ge 70 ] || { echo "too few pages crawled"; exit 1; }
+          test -s dist/search-index.json
+          test -s dist/404.html
+          grep -q 'markdown-body' dist/docs/start/what-is-dotnet/index.html
+
+      - id: guard
+        run: echo "configured=${{ secrets.VERCEL_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+
+      - if: steps.guard.outputs.configured != 'true'
+        run: |
+          {
+            echo "VERCEL_TOKEN is not set — built the site but skipped the deploy."
+            echo ""
+            echo 'Run `npx vercel link` locally, then add three secrets:'
+            echo '`gh secret set VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`'
+            echo '(the last two are in .vercel/project.json after linking).'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Arrange the Vercel Build Output
+        if: steps.guard.outputs.configured == 'true'
+        run: |
+          mkdir -p .vercel/output/static
+          cp -R dist/. .vercel/output/static/
+          cat > .vercel/output/config.json <<'JSON'
+          {
+            "version": 3,
+            "routes": [
+              {
+                "src": "^/fonts/(.*)$",
+                "headers": { "cache-control": "public, max-age=31536000, immutable" },
+                "continue": true
+              },
+              {
+                "src": "^/(.*)\\.[a-z0-9]{10}\\.(css|js)$",
+                "headers": { "cache-control": "public, max-age=31536000, immutable" },
+                "continue": true
+              },
+              { "handle": "filesystem" },
+              { "src": "^/.*$", "status": 404, "dest": "/404.html" }
+            ]
+          }
+          JSON
+
+      - name: Deploy
+        if: steps.guard.outputs.configured == 'true'
+        run: npx --yes vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

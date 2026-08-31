@@ -1,67 +1,31 @@
 @namespace DotnetStart.Components.Shared
-@inject IJSRuntime JS
-@rendermode InteractiveServer
 
-<div class="toc-feedback">
-    @if (!_loaded)
-    {
-        <span>Did this page help?</span>
-        <div class="skeleton-row">
-            <Skeleton Width="52px" Height="32px" Radius="6px" />
-            <Skeleton Width="52px" Height="32px" Radius="6px" />
-        </div>
-    }
-    else if (Vote is null)
-    {
+@*
+    Static markup with all three states present; app.js reveals the right one from
+    localStorage. Rendering every state up front means no skeleton and no flash of
+    the wrong prompt.
+*@
+<div class="toc-feedback" data-feedback="@Slug">
+    <div data-feedback-state="ask">
         <span>Did this page help?</span>
         <div>
-            <button type="button" @onclick='() => VoteAsync("yes")' aria-label="Yes, it helped">Yes</button>
-            <button type="button" @onclick='() => VoteAsync("no")' aria-label="No, it did not help">No</button>
+            <button type="button" data-feedback-vote="yes" aria-label="Yes, it helped">Yes</button>
+            <button type="button" data-feedback-vote="no" aria-label="No, it did not help">No</button>
         </div>
-    }
-    else if (Vote == "yes")
-    {
+    </div>
+    <div data-feedback-state="yes" hidden>
         <span class="thanks">Thanks — that is how we know what to keep.</span>
-    }
-    else
-    {
+    </div>
+    <div data-feedback-state="no" hidden>
         <span>Sorry it missed. Tell us what was wrong.</span>
         <div>
             <a class="button button-ghost" href="@IssueUrl">Open an issue</a>
         </div>
-    }
+    </div>
 </div>
 
 @code {
     [Parameter, EditorRequired] public string Slug { get; set; } = "";
 
-    private string? Vote { get; set; }
-    private string _loadedFor = "";
-    private bool _loaded;
     private string IssueUrl => $"https://github.com/JcscJosecarlossilvacoelho/dotnet-start/issues/new?title={Uri.EscapeDataString($"Docs: {Slug} was not useful")}&body={Uri.EscapeDataString($"The page `/docs/{Slug}` did not help.\n\nWhat I expected:\n\nWhat I found:\n")}";
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (_loadedFor == Slug) return;
-        _loadedFor = Slug;
-        try
-        {
-            Vote = await JS.InvokeAsync<string?>("dotnetStart.feedback.get", Slug);
-        }
-        catch (JSDisconnectedException) { return; }
-        catch (InvalidOperationException) { return; }
-
-        _loaded = true;
-        await InvokeAsync(StateHasChanged);
-    }
-
-    private async Task VoteAsync(string value)
-    {
-        Vote = value;
-        try
-        {
-            await JS.InvokeVoidAsync("dotnetStart.feedback.set", Slug, value);
-        }
-        catch (JSDisconnectedException) { }
-    }
 }

@@ -46,3 +46,7 @@ bin/
 obj/
 *.user
 *.suo
+
+# prerendered static output
+/dist/
+/.vercel/

@@ -1,8 +1,6 @@
 @namespace DotnetStart.Components.Shared
-@inject DocsSearchState Search
-@rendermode InteractiveServer
 
-<button type="button" class="@Class" @onclick="Search.Open" aria-label="Search documentation">
+<button type="button" class="@Class" data-search-open aria-label="Search documentation">
     <Icon Name="search" />
     <span>Search docs</span>
     <kbd>⌘ K</kbd>
