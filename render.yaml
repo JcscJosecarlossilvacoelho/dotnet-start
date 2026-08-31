@@ -1,0 +1,15 @@
+# Render blueprint. Point a new Blueprint at this repo, or set these values by
+# hand on an existing service.
+services:
+  - type: web
+    name: dotnet-start
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    healthCheckPath: /healthz
+    envVars:
+      # Render injects PORT itself (10000 by default). Program.cs binds to it and
+      # switches on forwarded-header handling when it is present, so nothing here
+      # needs to hardcode a port.
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production

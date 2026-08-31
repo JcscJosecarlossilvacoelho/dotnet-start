@@ -76,6 +76,22 @@ Render, Cloud Run, or a plain VPS:
 docker run -p 8080:8080 ghcr.io/<owner>/dotnet-start:latest
 ```
 
+### Render
+
+`render.yaml` is a working blueprint. Three things matter for this app:
+
+- **Bind to `$PORT`.** Render injects it (10000 by default) and scans for it;
+  a container that hardcodes 8080 fails with `Port scan timeout reached`.
+  `Program.cs` picks it up automatically.
+- **Health check `/healthz`.** Set it on the service, or let the blueprint do it.
+- **Do not force HTTPS in the container.** Render terminates TLS at its edge and
+  forwards plain HTTP, so `UseHttpsRedirection` has no port to redirect to. The
+  app detects this and trusts `X-Forwarded-Proto` instead — which is also what
+  lets the Blazor circuit negotiate `wss://` rather than `ws://`.
+
+Render's free instances spin down when idle. That drops the SignalR circuit of
+anyone reading, so use a paid instance for anything public.
+
 ### Fly.io
 
 `fly.toml` is ready to go. Pick a unique app name, then:
