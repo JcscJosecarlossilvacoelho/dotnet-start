@@ -3,9 +3,9 @@
 **.NET starts here.** The community-driven front door to modern .NET: opinionated
 documentation, runnable examples, prompts for coding agents, and installable .NET skills.
 
-[![.NET Start — the community front door to modern .NET](.github/assets/hero.png)](https://dotnet-start.onrender.com)
+[![.NET Start — the community front door to modern .NET](.github/assets/hero.png)](https://dotnet-start.vercel.app)
 
-**[Open the site →](https://dotnet-start.onrender.com)**
+**[Open the site →](https://dotnet-start.vercel.app)**
 
 ---
 
@@ -120,10 +120,10 @@ result with `vercel deploy --prebuilt` — Vercel's build image has no .NET SDK,
 the crawl happens in CI. It stays skipped until the secrets exist:
 
 ```bash
-npx vercel link
+# VERCEL_ORG_ID and VERCEL_PROJECT_ID are already set.
+# A Vercel personal token is account-wide, so mint it deliberately:
+vercel tokens add dotnet-start-ci
 gh secret set VERCEL_TOKEN
-gh secret set VERCEL_ORG_ID       # both are in .vercel/project.json
-gh secret set VERCEL_PROJECT_ID
 ```
 
 ### Container
