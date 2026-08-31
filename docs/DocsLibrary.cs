@@ -41,6 +41,14 @@ public sealed class DocsLibrary
         _rescanAfter = environment.IsDevelopment() ? TimeSpan.FromSeconds(1) : Timeout.InfiniteTimeSpan;
     }
 
+    /// <summary>
+    /// Reads and renders everything up front. Called during startup so the first
+    /// visitor does not pay for parsing every document — on a small shared-CPU
+    /// instance that first request is otherwise an order of magnitude slower than
+    /// the rest.
+    /// </summary>
+    public void Warm() => EnsureLoaded();
+
     public IReadOnlyList<DocSection> Sections { get { EnsureLoaded(); return _sections; } }
 
     public IReadOnlyList<DocEntry> AllDocuments { get { EnsureLoaded(); return _ordered; } }

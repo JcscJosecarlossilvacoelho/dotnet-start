@@ -6,6 +6,9 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     plan: starter
+    # Pick the region closest to your readers; a mismatched region costs more
+    # round-trip time than anything in the application.
+    region: frankfurt
     healthCheckPath: /healthz
     envVars:
       # Render injects PORT itself (10000 by default). Program.cs binds to it and

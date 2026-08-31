@@ -82,4 +82,7 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+// Before the first request, not during it.
+app.Services.GetRequiredService<DocsLibrary>().Warm();
+
 app.Run();
