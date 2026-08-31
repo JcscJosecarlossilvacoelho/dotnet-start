@@ -51,4 +51,4 @@ Let agents do the work that is verifiable: tests, refactors, migrations, boilerp
 
 ## Further reading
 
-- [Contribute a skill to this site](https://github.com/dotnet-sexy/dotnet-sexy/tree/main/skills)
+- [Contribute a skill to this site](https://github.com/JcscJosecarlossilvacoelho/dotnet-start/tree/main/skills)

@@ -2,7 +2,7 @@
 #   fly launch --no-deploy --copy-config
 #   gh secret set FLY_API_TOKEN --body "$(fly tokens create deploy)"
 # After that every push to main deploys via .github/workflows/deploy.yml.
-app = "dotnet-sexy"
+app = "dotnet-start"
 primary_region = "cdg"
 
 [build]

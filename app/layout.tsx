@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "dotnet sexy — Make .NET Sexy Again",
+  title: ".NET Start — .NET starts here",
   description: "The simple, modern, community-driven way to start building with .NET.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };

@@ -18,14 +18,14 @@ export default function Home() {
     <main>
       <div className="ambient ambient-one" /><div className="ambient ambient-two" />
       <nav className="nav shell" aria-label="Primary navigation">
-        <a className="brand" href="#top" aria-label="dotnet sexy home"><span className="brand-mark">.n</span><span>dotnet<span className="brand-accent">sexy</span></span></a>
+        <a className="brand" href="#top" aria-label=".NET Start home"><span className="brand-mark">.n</span><span>dotnet<span className="brand-accent">start</span></span></a>
         <div className="nav-links"><a href="#start">Get started</a><a href="#stack">The stack</a><a href="#community">Community</a></div>
         <a className="nav-cta" href="#community"><GitFork size={16} /> Contribute</a>
       </nav>
 
       <section className="hero shell" id="top">
         <div className="eyebrow"><Sparkles size={14} /> The modern way into .NET</div>
-        <h1>Make <span>.NET</span><br />sexy again.</h1>
+        <h1>Start<br /><span>.NET</span>.</h1>
         <p className="hero-copy">.NET is powerful. Starting with it should feel simple. One clear, opinionated path from your first command to production.</p>
         <div className="hero-actions"><a className="button primary" href="#start">Start building <ArrowRight size={17} /></a><a className="button secondary" href="#why">Why .NET?</a></div>
         <div className="terminal-window" aria-label="Terminal showing how to create a .NET application">
@@ -62,7 +62,7 @@ export default function Home() {
       </div></section>
 
       <section className="principles shell" id="principles"><p>Opinionated, not exclusive.</p><i /><p>Practical, not theoretical.</p><i /><p>Community first.</p></section>
-      <footer className="footer shell"><a className="brand" href="#top"><span className="brand-mark">.n</span><span>dotnet<span className="brand-accent">sexy</span></span></a><p>Making the first step into .NET feel as good as the thousandth.</p><span>Made with C# and unreasonable optimism.</span></footer>
+      <footer className="footer shell"><a className="brand" href="#top"><span className="brand-mark">.n</span><span>dotnet<span className="brand-accent">start</span></span></a><p>Making the first step into .NET feel as good as the thousandth.</p><span>Made with C# and unreasonable optimism.</span></footer>
     </main>
   );
 }

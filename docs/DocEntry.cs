@@ -1,4 +1,4 @@
-namespace DotnetSexy.Docs;
+namespace DotnetStart.Docs;
 
 /// <summary>A single Markdown document under <c>docs/</c>.</summary>
 public sealed record DocEntry(
@@ -11,7 +11,7 @@ public sealed record DocEntry(
     string Markdown)
 {
     public string Href => $"/docs/{Slug}";
-    public string EditUrl => $"https://github.com/dotnet-sexy/dotnet-sexy/edit/main/{RelativePath}";
+    public string EditUrl => $"https://github.com/JcscJosecarlossilvacoelho/dotnet-start/edit/main/{RelativePath}";
 
     /// <summary>Position in the flattened reading order, 1-based. Assigned when the library loads.</summary>
     public int Number { get; init; }

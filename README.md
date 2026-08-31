@@ -1,4 +1,4 @@
-# dotnet sexy
+# .NET Start
 
 The community-driven front door to modern .NET: opinionated documentation, runnable examples, prompts for coding agents, and installable .NET skills.
 
@@ -8,7 +8,7 @@ Requires the .NET 10 SDK.
 
 ```bash
 dotnet restore
-dotnet run --project dotnet-sexy.csproj
+dotnet run --project dotnet-start.csproj
 ```
 
 The UI is a Blazor Web App with interactive server components. Its main routes are `/`, `/docs`, and `/skills`.
@@ -54,7 +54,7 @@ Installable skills live in `skills/`:
 | `dotnet-observability` | Structured logging, OpenTelemetry, health checks, resilience |
 | `dotnet-performance` | Benchmarking, allocations, caching, Native AOT |
 
-Install one with `npx skills add dotnet-sexy/dotnet-sexy --skill <name>`, or all of them by dropping the flag.
+Install one with `npx skills add JcscJosecarlossilvacoelho/dotnet-start --skill <name>`, or all of them by dropping the flag.
 
 ## Deployment
 
@@ -66,14 +66,14 @@ static hosts such as GitHub Pages cannot serve it.
 Container Registry on every push to `main`:
 
 ```
-ghcr.io/<owner>/dotnet-sexy:latest
+ghcr.io/<owner>/dotnet-start:latest
 ```
 
 That image runs anywhere that takes a container — Fly.io, Azure Container Apps,
 Render, Cloud Run, or a plain VPS:
 
 ```bash
-docker run -p 8080:8080 ghcr.io/<owner>/dotnet-sexy:latest
+docker run -p 8080:8080 ghcr.io/<owner>/dotnet-start:latest
 ```
 
 ### Fly.io

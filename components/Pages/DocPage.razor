@@ -1,11 +1,11 @@
-@namespace DotnetSexy.Components.Pages
+@namespace DotnetStart.Components.Pages
 @page "/docs/{*Slug}"
 @inject DocsLibrary Library
 @inject NavigationManager Nav
 
 @if (Document is null)
 {
-    <PageTitle>Missing guide · Make .NET sexy</PageTitle>
+    <PageTitle>Missing guide · .NET Start</PageTitle>
     <main class="empty-page shell">
         <p class="eyebrow">DOCS / NOT FOUND</p>
         <h1>This guide is not here yet.</h1>
@@ -15,7 +15,7 @@
 }
 else
 {
-    <PageTitle>@Document.Title · Make .NET sexy</PageTitle>
+    <PageTitle>@Document.Title · .NET Start</PageTitle>
     <main class="docs-shell shell">
         <DocsNav CurrentSlug="@Document.Slug" />
 

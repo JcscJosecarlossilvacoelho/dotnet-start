@@ -1,5 +1,5 @@
-using DotnetSexy.Components;
-using DotnetSexy.Docs;
+using DotnetStart.Components;
+using DotnetStart.Docs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseStaticWebAssets();

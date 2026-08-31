@@ -3,7 +3,7 @@ using Markdig.Extensions.AutoIdentifiers;
 using Markdig.Renderers.Html;
 using Markdig.Syntax;
 
-namespace DotnetSexy.Docs;
+namespace DotnetStart.Docs;
 
 /// <summary>
 /// Reads the community-owned Markdown in <c>docs/</c> and turns it into the

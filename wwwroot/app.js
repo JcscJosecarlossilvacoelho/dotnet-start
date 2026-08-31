@@ -1,4 +1,4 @@
-window.dotnetSexy = {
+window.dotnetStart = {
   copy: async (text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -18,7 +18,7 @@ window.dotnetSexy = {
   },
 
   bindSearchKeys(dotNet) {
-    window.dotnetSexy.unbindSearchKeys();
+    window.dotnetStart.unbindSearchKeys();
     const onKey = (event) => {
       const key = event.key.toLowerCase();
       if ((event.metaKey || event.ctrlKey) && key === "k") {
@@ -30,14 +30,14 @@ window.dotnetSexy = {
         dotNet.invokeMethodAsync("CloseFromKeyboard");
       }
     };
-    window.dotnetSexy._searchKeyHandler = onKey;
+    window.dotnetStart._searchKeyHandler = onKey;
     window.addEventListener("keydown", onKey);
   },
 
   unbindSearchKeys() {
-    if (window.dotnetSexy._searchKeyHandler) {
-      window.removeEventListener("keydown", window.dotnetSexy._searchKeyHandler);
-      window.dotnetSexy._searchKeyHandler = null;
+    if (window.dotnetStart._searchKeyHandler) {
+      window.removeEventListener("keydown", window.dotnetStart._searchKeyHandler);
+      window.dotnetStart._searchKeyHandler = null;
     }
   },
 
@@ -91,14 +91,14 @@ window.dotnetSexy = {
     show() {
       const article = document.querySelector('.doc-article');
       if (!article) return;
-      article.innerHTML = window.dotnetSexy.docsLoading.article();
+      article.innerHTML = window.dotnetStart.docsLoading.article();
       const toc = document.querySelector('.docs-toc');
-      if (toc) toc.innerHTML = window.dotnetSexy.docsLoading.toc();
+      if (toc) toc.innerHTML = window.dotnetStart.docsLoading.toc();
       document.documentElement.classList.add('docs-navigating');
     },
 
     clear() {
-      const state = window.dotnetSexy.docsLoading;
+      const state = window.dotnetStart.docsLoading;
       if (state._timer) {
         clearTimeout(state._timer);
         state._timer = null;
@@ -107,7 +107,7 @@ window.dotnetSexy = {
     },
 
     arm() {
-      const state = window.dotnetSexy.docsLoading;
+      const state = window.dotnetStart.docsLoading;
 
       document.addEventListener(
         'click',
@@ -135,7 +135,7 @@ window.dotnetSexy = {
 
     // blazor.web.js may not have defined window.Blazor yet when the page is parsed.
     _bindEnhancedLoad(attempt) {
-      const state = window.dotnetSexy.docsLoading;
+      const state = window.dotnetStart.docsLoading;
       if (window.Blazor && window.Blazor.addEventListener) {
         window.Blazor.addEventListener('enhancedload', state.clear);
         return;
@@ -147,12 +147,12 @@ window.dotnetSexy = {
 
   feedback: {
     get(slug) {
-      return localStorage.getItem("dotnet-sexy:feedback:" + slug);
+      return localStorage.getItem("dotnet-start:feedback:" + slug);
     },
     set(slug, value) {
-      localStorage.setItem("dotnet-sexy:feedback:" + slug, value);
+      localStorage.setItem("dotnet-start:feedback:" + slug, value);
     }
   }
 };
 
-document.addEventListener("DOMContentLoaded", () => window.dotnetSexy.docsLoading.arm());
+document.addEventListener("DOMContentLoaded", () => window.dotnetStart.docsLoading.arm());

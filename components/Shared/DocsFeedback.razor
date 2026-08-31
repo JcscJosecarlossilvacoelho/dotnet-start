@@ -1,4 +1,4 @@
-@namespace DotnetSexy.Components.Shared
+@namespace DotnetStart.Components.Shared
 @inject IJSRuntime JS
 @rendermode InteractiveServer
 
@@ -38,7 +38,7 @@
     private string? Vote { get; set; }
     private string _loadedFor = "";
     private bool _loaded;
-    private string IssueUrl => $"https://github.com/dotnet-sexy/dotnet-sexy/issues/new?title={Uri.EscapeDataString($"Docs: {Slug} was not useful")}&body={Uri.EscapeDataString($"The page `/docs/{Slug}` did not help.\n\nWhat I expected:\n\nWhat I found:\n")}";
+    private string IssueUrl => $"https://github.com/JcscJosecarlossilvacoelho/dotnet-start/issues/new?title={Uri.EscapeDataString($"Docs: {Slug} was not useful")}&body={Uri.EscapeDataString($"The page `/docs/{Slug}` did not help.\n\nWhat I expected:\n\nWhat I found:\n")}";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -46,7 +46,7 @@
         _loadedFor = Slug;
         try
         {
-            Vote = await JS.InvokeAsync<string?>("dotnetSexy.feedback.get", Slug);
+            Vote = await JS.InvokeAsync<string?>("dotnetStart.feedback.get", Slug);
         }
         catch (JSDisconnectedException) { return; }
         catch (InvalidOperationException) { return; }
@@ -60,7 +60,7 @@
         Vote = value;
         try
         {
-            await JS.InvokeVoidAsync("dotnetSexy.feedback.set", Slug, value);
+            await JS.InvokeVoidAsync("dotnetStart.feedback.set", Slug, value);
         }
         catch (JSDisconnectedException) { }
     }

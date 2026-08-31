@@ -2,11 +2,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY dotnet-sexy.csproj ./
-RUN dotnet restore dotnet-sexy.csproj
+COPY dotnet-start.csproj ./
+RUN dotnet restore dotnet-start.csproj
 
 COPY . .
-RUN dotnet publish dotnet-sexy.csproj -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish dotnet-start.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 # ---- run ---------------------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
@@ -20,4 +20,4 @@ ENV ASPNETCORE_URLS=http://+:8080 \
 EXPOSE 8080
 
 COPY --from=build /app/publish ./
-ENTRYPOINT ["dotnet", "dotnet-sexy.dll"]
+ENTRYPOINT ["dotnet", "dotnet-start.dll"]

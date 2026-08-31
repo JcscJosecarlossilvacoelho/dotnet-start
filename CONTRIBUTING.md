@@ -1,4 +1,4 @@
-# Contributing to dotnet sexy
+# Contributing to .NET Start
 
 Thanks for helping make .NET easier to start with.
 

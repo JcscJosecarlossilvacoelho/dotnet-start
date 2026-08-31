@@ -1,4 +1,4 @@
-@namespace DotnetSexy.Components.Shared
+@namespace DotnetStart.Components.Shared
 @inject DocsLibrary Library
 @inject DocsSearchState Search
 @inject IJSRuntime JS
@@ -75,7 +75,7 @@
         {
             _keysBound = true;
             _self = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("dotnetSexy.bindSearchKeys", _self);
+            await JS.InvokeVoidAsync("dotnetStart.bindSearchKeys", _self);
         }
 
         if (_focusPending && Search.IsOpen)
@@ -137,7 +137,7 @@
     public void Dispose()
     {
         Search.Changed -= OnSearchChanged;
-        try { _ = JS.InvokeVoidAsync("dotnetSexy.unbindSearchKeys"); }
+        try { _ = JS.InvokeVoidAsync("dotnetStart.unbindSearchKeys"); }
         catch { }
         _self?.Dispose();
     }

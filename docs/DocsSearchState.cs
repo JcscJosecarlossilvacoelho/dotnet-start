@@ -1,4 +1,4 @@
-namespace DotnetSexy.Docs;
+namespace DotnetStart.Docs;
 
 /// <summary>Shared open/close state for the documentation search palette (⌘K).</summary>
 public sealed class DocsSearchState

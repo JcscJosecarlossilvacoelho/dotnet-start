@@ -112,7 +112,7 @@ consequences worth writing for:
 ## Preview your change
 
 ```bash
-dotnet run --project dotnet-sexy.csproj
+dotnet run --project dotnet-start.csproj
 ```
 
 Then open <http://localhost:5000/docs>. In Development the library re-reads this

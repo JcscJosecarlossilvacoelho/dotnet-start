@@ -1,4 +1,4 @@
-@namespace DotnetSexy.Components.Shared
+@namespace DotnetStart.Components.Shared
 @inject IJSRuntime JS
 
 <div class="code-block @Class">
@@ -26,7 +26,7 @@
 
     private async Task CopyAsync()
     {
-        if (await JS.InvokeAsync<bool>("dotnetSexy.copy", Code))
+        if (await JS.InvokeAsync<bool>("dotnetStart.copy", Code))
         {
             Copied = true;
             await Task.Delay(1600);
