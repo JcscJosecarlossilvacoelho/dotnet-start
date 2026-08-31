@@ -71,9 +71,23 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = context =>
+    {
+        // Font files are referenced by name from inside app.css, so they cannot
+        // carry a build-time fingerprint the way the stylesheet itself does.
+        // They are versioned by their filename and never edited in place, so
+        // cache them hard rather than revalidating one per page view.
+        if (context.Context.Request.Path.StartsWithSegments("/fonts"))
+        {
+            context.Context.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
+        }
+    }
+});
+
 app.UseRouting();
 
-app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapGet("/healthz", () => Results.Text("ok"));
