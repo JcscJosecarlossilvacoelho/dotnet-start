@@ -242,3 +242,10 @@ button.search-trigger { appearance: none; width: 190px; }
 .toc-skeleton { display: flex; flex-direction: column; gap: 14px; }
 .docs-navigating .doc-article, .docs-navigating .docs-toc { opacity: .85; }
 @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; background: #1d1c22; } }
+
+/* --- support link --------------------------------------------------------- */
+.support-link { display: block; margin-top: 22px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: #111116; color: #aaa5af; }
+.support-link:hover { border-color: var(--violet); background: rgba(168,121,255,.07); color: white; }
+.support-icon { display: inline-flex; color: var(--violet); }
+.support-link b { display: block; margin-top: 6px; font-size: 10px; color: inherit; }
+.support-link .support-note { display: block; margin-top: 4px; color: #77727d; font-size: 9px; line-height: 1.5; }
