@@ -8,7 +8,7 @@ description: Write, review, or modernize idiomatic C#. Use for nullable referenc
 Read the project file first. `TargetFramework`, `LangVersion`, `Nullable`, and `ImplicitUsings` decide which of the guidance below applies — never write syntax the target framework cannot compile.
 
 ```bash
-grep -E 'TargetFramework|LangVersion|Nullable|ImplicitUsings|TreatWarningsAsErrors' **/*.csproj Directory.Build.props 2>/dev/null
+rg -n 'TargetFramework|LangVersion|Nullable|ImplicitUsings|TreatWarningsAsErrors' -g '*.csproj' -g 'Directory.Build.props'
 ```
 
 Then match the surrounding file: its naming, its expression-bodied vs block style, its file-scoped vs block namespaces. Consistency with the file beats consistency with this skill.

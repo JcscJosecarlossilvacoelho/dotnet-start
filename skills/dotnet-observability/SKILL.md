@@ -52,7 +52,7 @@ builder.Services.AddOpenTelemetry()
 - One `ActivitySource` and one `Meter` per component, held as `static readonly`, named after the assembly. Register the name with the provider or nothing is exported.
 - Add custom spans for meaningful work, not for every method. Put the identifying data on the span as tags — a span with no tags cannot answer a question.
 - Prefer metrics over logs for anything you would count or graph: `Counter<T>` for events, `Histogram<T>` for durations and sizes, an observable gauge for queue depth. Keep tag cardinality low — never a user id or an order id as a tag.
-- Sample traces in production (parent-based, with a head sampler) but keep errors unsampled.
+- Sample traces in production. Use parent-based head sampling when a representative subset is enough; use a collector with tail sampling when the decision must depend on the completed trace, such as retaining every error or high-latency trace.
 
 ## Health checks
 

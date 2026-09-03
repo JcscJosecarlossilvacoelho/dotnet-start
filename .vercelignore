@@ -1,0 +1,9 @@
+node_modules
+.sites-runtime
+.wrangler
+bin
+obj
+dist
+.next
+tests
+*.log

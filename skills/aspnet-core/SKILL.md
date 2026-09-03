@@ -8,7 +8,7 @@ description: Build, change, or review ASP.NET Core APIs and services. Use for Mi
 Read the target framework, the project file, `Program.cs`, and the nearest existing endpoint and its test before writing anything. Preserve the project's established API style unless the change itself justifies a deliberate migration.
 
 ```bash
-grep -E 'TargetFramework|PackageReference' *.csproj **/*.csproj 2>/dev/null
+rg -n 'TargetFramework|PackageReference' -g '*.csproj'
 sed -n '1,80p' Program.cs
 ```
 

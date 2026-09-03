@@ -8,8 +8,8 @@ description: Write, review, or repair .NET tests. Use for xUnit and NUnit test d
 Read the existing test project before adding anything: its framework (`xunit`, `nunit`, `MSTest`, `TUnit`), its assertion library, and its fixture conventions. Use what is there. Introducing a second test framework or assertion style into a repository is a cost, not an improvement.
 
 ```bash
-ls **/*.Tests.csproj **/*.Tests/*.csproj 2>/dev/null
-grep -h PackageReference **/*.Tests.csproj | sort -u
+rg --files -g '*.Tests.csproj' -g '*/Tests/*.csproj'
+rg -n 'PackageReference' -g '*.Tests.csproj' -g '*/Tests/*.csproj'
 ```
 
 ## Decide what kind of test this is

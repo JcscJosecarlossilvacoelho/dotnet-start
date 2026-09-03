@@ -133,7 +133,11 @@
     toggle() {
       const overlay = this.overlay();
       if (!overlay) return;
-      overlay.hidden ? this.open() : this.close();
+      if (overlay.hidden) {
+        this.open();
+      } else {
+        this.close();
+      }
     },
 
     query(text) {

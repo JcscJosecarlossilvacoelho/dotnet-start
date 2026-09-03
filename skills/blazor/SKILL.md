@@ -8,7 +8,7 @@ description: Build, change, or review Blazor interfaces. Use for Razor component
 Read `Program.cs`, `App.razor`, the layout and route structure, and the nearest existing component before editing. Match the repository's component and styling conventions.
 
 ```bash
-grep -rE 'AddInteractive|AddRazorComponents|rendermode' Program.cs components app 2>/dev/null | head
+rg -n 'AddInteractive|AddRazorComponents|rendermode' -g '*.cs' -g '*.razor'
 ```
 
 ## Choose the render mode first

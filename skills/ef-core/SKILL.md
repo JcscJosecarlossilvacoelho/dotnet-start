@@ -8,8 +8,8 @@ description: Design, implement, or review Entity Framework Core persistence. Use
 Inspect the EF Core and provider versions, the `DbContext`, the entity configurations, the migrations folder, and the query you are about to change. Preserve the project's migration history and its database naming conventions.
 
 ```bash
-grep -h 'Microsoft.EntityFrameworkCore' **/*.csproj | sort -u
-ls Migrations | tail -5
+rg -n 'Microsoft.EntityFrameworkCore' -g '*.csproj'
+rg --files -g 'Migrations/*.cs' | sort | tail -5
 ```
 
 ## Model deliberately
@@ -60,14 +60,16 @@ var mine = all.Where(o => o.CustomerId == customerId).ToList();
 - Anything after `AsEnumerable()`, `ToList()`, or a method EF cannot translate runs **in memory**. That is where accidental full-table scans come from.
 - Do not call `await` inside a `foreach` over entities to load related data — that *is* the N+1.
 
-```bash
-# See the SQL
-dotnet ef dbcontext optimize          # compiled model, large schemas
-# or log it in development:
-#   options.UseNpgsql(cs).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging()
+```csharp
+// Inspect a query without executing it.
+var sql = query.ToQueryString();
+
+// Or log executed commands in development:
+options.UseNpgsql(connectionString)
+    .LogTo(Console.WriteLine, LogLevel.Information);
 ```
 
-Enable `EnableSensitiveDataLogging` in development only.
+Add `EnableSensitiveDataLogging()` only when parameter values are essential to a local diagnosis; it can expose credentials and personal data.
 
 ## Save deliberately
 
