@@ -19,12 +19,20 @@ cleanup() {
 trap cleanup EXIT
 
 echo "==> publishing"
+# Clean first. An incremental Release publish has twice served the previous
+# build here after an edit, which silently crawls the old site — the one thing
+# this script must never do.
+dotnet clean "$ROOT/dotnet-start.csproj" -c Release -nologo -v q
 dotnet publish "$ROOT/dotnet-start.csproj" -c Release -o "$PUBLISH" -nologo -v q
 
 echo "==> booting"
 # Run from the publish directory: started inside the source tree, static web
 # assets resolve back to source paths and the precompressed variants go missing.
-(cd "$PUBLISH" && ASPNETCORE_ENVIRONMENT=Production ASPNETCORE_URLS="$BASE" dotnet "$PUBLISH/dotnet-start.dll" >"$PUBLISH/server.log" 2>&1) &
+# The crawled HTML is what Vercel serves, so this is where the analytics tags
+# belong. Set VERCEL_ANALYTICS_ENABLED=0 to crawl a copy without them.
+(cd "$PUBLISH" && ASPNETCORE_ENVIRONMENT=Production ASPNETCORE_URLS="$BASE" \
+  VERCEL_ANALYTICS_ENABLED="${VERCEL_ANALYTICS_ENABLED:-1}" \
+  dotnet "$PUBLISH/dotnet-start.dll" >"$PUBLISH/server.log" 2>&1) &
 APP_PID=$!
 
 for _ in $(seq 1 120); do

@@ -131,6 +131,11 @@ That publishes the app, boots it, walks `/sitemap.txt`, and writes every route t
 `dist/<route>/index.html` along with the assets, `search-index.json`, and a
 `404.html`. The result is ~85 pages that need no server at all.
 
+The crawl boots the app with `VERCEL_ANALYTICS_ENABLED=1`, so the static build
+carries Vercel's Web Analytics and Speed Insights tags. They are the one thing in
+the site that only works on Vercel's edge, so nothing else emits them — set the
+variable to `0` to crawl a copy without them.
+
 `.github/workflows/vercel.yml` does this on every push to `main` and uploads the
 result with `vercel deploy --prebuilt` — Vercel's build image has no .NET SDK, so
 the crawl happens in CI. It reads three encrypted repository secrets and stays

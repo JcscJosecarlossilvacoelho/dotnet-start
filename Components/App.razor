@@ -20,5 +20,11 @@
 <body>
     <Routes />
     <script src="@Assets["app.js"]"></script>
+    @if (VercelAnalytics.IsEnabled())
+    {
+        @* Served by Vercel's edge, so only emitted into the crawled static build. *@
+        <script defer src="@VercelAnalytics.WebAnalyticsScript"></script>
+        <script defer src="@VercelAnalytics.SpeedInsightsScript"></script>
+    }
 </body>
 </html>

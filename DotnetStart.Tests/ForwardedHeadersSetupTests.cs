@@ -102,3 +102,32 @@ public sealed class ForwardedHeadersSetupTests
 
 [CollectionDefinition("Environment", DisableParallelization = true)]
 public sealed class EnvironmentCollection;
+
+public sealed class VercelAnalyticsTests : IDisposable
+{
+    [Fact]
+    public void Off_by_default_so_a_container_does_not_request_Vercel_only_paths()
+    {
+        Environment.SetEnvironmentVariable(VercelAnalytics.EnabledVariable, null);
+        Assert.False(VercelAnalytics.IsEnabled());
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("true")]
+    [InlineData("yes")]
+    public void Opts_in_on_the_same_truthy_values_as_the_forwarded_headers(string value)
+    {
+        Environment.SetEnvironmentVariable(VercelAnalytics.EnabledVariable, value);
+        Assert.True(VercelAnalytics.IsEnabled());
+    }
+
+    [Fact]
+    public void Points_at_the_paths_Vercels_edge_serves()
+    {
+        Assert.Equal("/_vercel/insights/script.js", VercelAnalytics.WebAnalyticsScript);
+        Assert.Equal("/_vercel/speed-insights/script.js", VercelAnalytics.SpeedInsightsScript);
+    }
+
+    public void Dispose() => Environment.SetEnvironmentVariable(VercelAnalytics.EnabledVariable, null);
+}
