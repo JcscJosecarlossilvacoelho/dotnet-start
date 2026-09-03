@@ -1,0 +1,16 @@
+@namespace DotnetStart.Components.Shared
+
+<PageTitle>Page not found · .NET Start</PageTitle>
+<main class="empty-page shell">
+    <p class="eyebrow">404 / unknown route</p>
+    <h1>This page has not<br />been compiled yet.</h1>
+    <p>Head home and pick another path.</p>
+    <a class="button button-primary" href="/">Back to home <Icon Name="arrow-right" /></a>
+</main>
+
+@code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    protected override void OnInitialized() => NotFoundStatus.Mark(HttpContext);
+}

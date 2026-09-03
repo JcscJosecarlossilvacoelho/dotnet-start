@@ -17,10 +17,13 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore dotnet-start.csproj
+        run: dotnet restore
 
       - name: Build
-        run: dotnet build dotnet-start.csproj -c Release --no-restore
+        run: dotnet build -c Release --no-restore
+
+      - name: Test
+        run: dotnet test -c Release --no-build --verbosity normal
 
       - name: Publish
         run: dotnet publish dotnet-start.csproj -c Release --no-build -o ./publish
@@ -37,3 +40,9 @@ jobs:
             echo "$path -> $code"
             [ "$code" = "200" ] || exit 1
           done
+          missing=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:5199/docs/this-guide-does-not-exist)
+          echo "/docs/this-guide-does-not-exist -> $missing"
+          [ "$missing" = "404" ] || exit 1
+          unknown=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:5199/not-a-real-route)
+          echo "/not-a-real-route -> $unknown"
+          [ "$unknown" = "404" ] || exit 1

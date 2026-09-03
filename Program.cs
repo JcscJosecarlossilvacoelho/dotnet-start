@@ -1,33 +1,31 @@
+using DotnetStart;
 using DotnetStart.Components;
 using DotnetStart.Docs;
-using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseStaticWebAssets();
 
 // Render, Cloud Run, Heroku and friends hand the port to bind on in $PORT and
-// terminate TLS at their own edge, forwarding plain HTTP inwards. Treat the
-// presence of $PORT as "there is a proxy in front of me": bind where the
-// platform is looking, and trust its forwarded headers instead of trying to
-// redirect to an HTTPS port this process does not have.
+// terminate TLS at their own edge, forwarding plain HTTP inwards. $PORT only
+// means "bind here and do not redirect to an HTTPS port this process does not
+// have". Trusting X-Forwarded-* is a separate, explicit decision: see
+// ForwardedHeadersSetup, render.yaml, and fly.toml.
 var port = Environment.GetEnvironmentVariable("PORT");
-var behindProxy = !string.IsNullOrWhiteSpace(port);
+var bindToPlatformPort = !string.IsNullOrWhiteSpace(port);
+var trustForwardedHeaders = ForwardedHeadersSetup.IsEnabled();
 
-if (behindProxy)
+if (bindToPlatformPort)
 {
     builder.WebHost.UseUrls($"http://+:{port}");
+}
 
-    builder.Services.Configure<ForwardedHeadersOptions>(options =>
-    {
-        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-        // The proxy is the platform's own load balancer on an address we cannot
-        // predict, so the default allow-list would drop its headers.
-        options.KnownIPNetworks.Clear();
-        options.KnownProxies.Clear();
-    });
+if (trustForwardedHeaders)
+{
+    builder.Services.Configure<ForwardedHeadersOptions>(ForwardedHeadersSetup.Apply);
 }
 
 builder.Services.AddSingleton<DocsLibrary>();
+builder.Services.AddSingleton<SkillsLibrary>();
 
 // Every component renders statically. Search, the feedback prompt and the copy
 // buttons are plain JavaScript over data attributes, so there is no circuit to
@@ -36,10 +34,11 @@ builder.Services.AddRazorComponents();
 
 var app = builder.Build();
 
-if (behindProxy)
+if (trustForwardedHeaders)
 {
-    // Must run before anything reads the scheme — the SignalR circuit needs to
-    // know it arrived over HTTPS so it negotiates wss:// rather than ws://.
+    // Must run before anything reads the scheme — redirects and any WebSocket
+    // upgrade need the original https so they do not advertise http/ws to the
+    // public edge.
     app.UseForwardedHeaders();
 }
 
@@ -49,7 +48,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-if (!behindProxy)
+if (!bindToPlatformPort)
 {
     app.UseHttpsRedirection();
 }
@@ -105,14 +104,18 @@ app.MapGet("/search-index.json", (DocsLibrary library) => Results.Json(
 
 // Every URL the site publishes: what the prerender crawler walks, and a plain
 // sitemap for crawlers that want one.
-app.MapGet("/sitemap.txt", (DocsLibrary library) => Results.Text(
+app.MapGet("/sitemap.txt", (DocsLibrary library, SkillsLibrary skills) => Results.Text(
     string.Join('\n', new[] { "/", "/docs", "/skills" }
-        .Concat(library.AllDocuments.Select(doc => doc.Href)))));
+        .Concat(library.AllDocuments.Select(doc => doc.Href))
+        .Concat(skills.All.Select(skill => skill.Href))) + '\n'));
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>();
 
 // Before the first request, not during it.
 app.Services.GetRequiredService<DocsLibrary>().Warm();
+app.Services.GetRequiredService<SkillsLibrary>().Warm();
 
 app.Run();
+
+public partial class Program;

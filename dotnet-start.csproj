@@ -9,7 +9,17 @@
     <PackageReference Include="Markdig" Version="1.3.2" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="DotnetStart.Tests/**" />
+    <Content Remove="DotnetStart.Tests/**" />
+    <EmbeddedResource Remove="DotnetStart.Tests/**" />
+    <None Remove="DotnetStart.Tests/**" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="docs\**\*.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="skills\**\SKILL.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="DotnetStart.Tests" />
   </ItemGroup>
 
 </Project>

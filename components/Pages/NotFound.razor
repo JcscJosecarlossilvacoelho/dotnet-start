@@ -1,0 +1,8 @@
+@namespace DotnetStart.Components.Pages
+@page "/{*Path}"
+
+<NotFoundPage />
+
+@code {
+    [Parameter] public string? Path { get; set; }
+}

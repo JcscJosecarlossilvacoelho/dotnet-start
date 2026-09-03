@@ -25,7 +25,7 @@ public sealed class DocsLibrary
     private List<DocSection> _sections = [];
     private Dictionary<string, DocEntry> _bySlug = new(StringComparer.OrdinalIgnoreCase);
     private List<DocEntry> _ordered = [];
-    private DateTime _loadedFrom = DateTime.MinValue;
+    private DocsFolderStamp _loadedStamp;
     private long _nextScanTicks;
 
     /// <summary>
@@ -36,9 +36,21 @@ public sealed class DocsLibrary
     private readonly TimeSpan _rescanAfter;
 
     public DocsLibrary(IWebHostEnvironment environment)
+        : this(
+            Path.Combine(environment.ContentRootPath, "docs"),
+            environment.IsDevelopment() ? TimeSpan.FromSeconds(1) : Timeout.InfiniteTimeSpan)
     {
-        _root = Path.Combine(environment.ContentRootPath, "docs");
-        _rescanAfter = environment.IsDevelopment() ? TimeSpan.FromSeconds(1) : Timeout.InfiniteTimeSpan;
+    }
+
+    /// <summary>
+    /// Loads Markdown from <paramref name="root"/>. A zero <paramref name="rescanAfter"/>
+    /// re-reads on every access (tests); <see cref="Timeout.InfiniteTimeSpan"/> never does
+    /// (production).
+    /// </summary>
+    public DocsLibrary(string root, TimeSpan rescanAfter)
+    {
+        _root = root;
+        _rescanAfter = rescanAfter;
     }
 
     /// <summary>
@@ -144,30 +156,82 @@ public sealed class DocsLibrary
     {
         // The fast path — every page render after the first — is a single volatile read.
         if (_ordered.Count > 0 && Environment.TickCount64 < Interlocked.Read(ref _nextScanTicks)) return;
-        if (!Directory.Exists(_root)) return;
 
-        var newest = Directory
-            .EnumerateFiles(_root, "*.md", SearchOption.AllDirectories)
-            .Select(File.GetLastWriteTimeUtc)
-            .DefaultIfEmpty(DateTime.MinValue)
-            .Max();
+        if (!Directory.Exists(_root))
+        {
+            lock (_gate)
+            {
+                ClearCache(DocsFolderStamp.Missing);
+            }
+
+            ScheduleNextScan();
+            return;
+        }
 
         ScheduleNextScan();
+        var stamp = ReadStamp();
 
-        if (newest <= _loadedFrom && _ordered.Count > 0) return;
+        if (_ordered.Count > 0 && stamp == _loadedStamp) return;
 
         lock (_gate)
         {
-            if (newest <= _loadedFrom && _ordered.Count > 0) return;
+            if (_ordered.Count > 0 && stamp == _loadedStamp) return;
             Load();
-            _loadedFrom = newest;
+            _loadedStamp = stamp;
         }
+    }
+
+    /// <summary>
+    /// A cheap folder fingerprint. Max write time alone misses deletions (the remaining
+    /// files are unchanged) and can miss an add whose timestamp is not newer than the
+    /// previous max. Count, paths, sizes and write times together catch all three.
+    /// </summary>
+    private DocsFolderStamp ReadStamp()
+    {
+        var files = Directory
+            .EnumerateFiles(_root, "*.md", SearchOption.AllDirectories)
+            .OrderBy(static path => path, StringComparer.Ordinal);
+
+        var hash = new HashCode();
+        var count = 0;
+        long maxTicks = 0;
+        long totalLength = 0;
+
+        foreach (var file in files)
+        {
+            var info = new FileInfo(file);
+            var ticks = info.LastWriteTimeUtc.Ticks;
+            count++;
+            totalLength += info.Length;
+            if (ticks > maxTicks) maxTicks = ticks;
+            hash.Add(file, StringComparer.Ordinal);
+            hash.Add(info.Length);
+            hash.Add(ticks);
+        }
+
+        return new DocsFolderStamp(count, maxTicks, totalLength, hash.ToHashCode());
+    }
+
+    private void ClearCache(DocsFolderStamp stamp)
+    {
+        _sections = [];
+        _ordered = [];
+        _bySlug = new(StringComparer.OrdinalIgnoreCase);
+        _loadedStamp = stamp;
+    }
+
+    private readonly record struct DocsFolderStamp(int FileCount, long MaxWriteTicks, long TotalLength, int ContentsHash)
+    {
+        public static DocsFolderStamp Missing => new(-1, 0, 0, 0);
     }
 
     private void ScheduleNextScan()
     {
-        var next = _rescanAfter == Timeout.InfiniteTimeSpan
-            ? long.MaxValue
+        // Zero means "stat on every access" (tests). Adding zero milliseconds to
+        // TickCount64 would still win the fast-path comparison inside the same
+        // tick and skip a reload that the caller just set up.
+        var next = _rescanAfter == Timeout.InfiniteTimeSpan ? long.MaxValue
+            : _rescanAfter <= TimeSpan.Zero ? long.MinValue
             : Environment.TickCount64 + (long)_rescanAfter.TotalMilliseconds;
         Interlocked.Exchange(ref _nextScanTicks, next);
     }
@@ -271,7 +335,7 @@ public sealed class DocsLibrary
         => front.TryGetValue("order", out var raw) && int.TryParse(raw, out var order) ? order : 500;
 
     /// <summary>Splits a `---` delimited YAML-ish header of simple `key: value` pairs from the body.</summary>
-    private static (Dictionary<string, string> Front, string Body) SplitFrontMatter(string text)
+    internal static (Dictionary<string, string> Front, string Body) SplitFrontMatter(string text)
     {
         var front = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var normalised = text.Replace("\r\n", "\n");

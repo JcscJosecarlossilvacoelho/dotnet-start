@@ -36,6 +36,16 @@ Every practical guide should contain:
 - a short Claude/Codex prompt that reaches the same outcome;
 - a clear next step.
 
+## Tests
+
+C# behaviour lives in `DotnetStart.Tests`. After changing `docs/DocsLibrary.cs`, forwarded-header setup, or a Razor page that sets an HTTP status, run:
+
+```bash
+dotnet test
+```
+
+The Vinext preview under `app/` is not the published site. Do not treat `npm test` as coverage of the Blazor app.
+
 ## Skills
 
 Installable agent skills live in `skills/<skill-name>/SKILL.md`. Keep each skill focused on decisions that materially improve an agent's work. Validate new or changed skills before opening a pull request.

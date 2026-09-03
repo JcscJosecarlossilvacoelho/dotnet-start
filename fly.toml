@@ -8,6 +8,11 @@ primary_region = "cdg"
 [build]
   dockerfile = "Dockerfile"
 
+[env]
+  FORWARDED_HEADERS_ENABLED = "true"
+  # Trust Fly's private-network proxy, not the public internet.
+  FORWARDED_HEADERS_KNOWN_NETWORKS = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,100.64.0.0/10,fc00::/7"
+
 [http_service]
   internal_port = 8080
   force_https = true

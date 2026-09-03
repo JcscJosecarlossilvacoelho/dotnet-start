@@ -11,8 +11,12 @@ services:
     region: frankfurt
     healthCheckPath: /healthz
     envVars:
-      # Render injects PORT itself (10000 by default). Program.cs binds to it and
-      # switches on forwarded-header handling when it is present, so nothing here
-      # needs to hardcode a port.
+      # Render injects PORT itself (10000 by default). Program.cs binds to it so
+      # the port scan succeeds; that is not a trust decision for X-Forwarded-*.
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
+      - key: FORWARDED_HEADERS_ENABLED
+        value: "true"
+      # Trust Render's private-network load balancer, not the public internet.
+      - key: FORWARDED_HEADERS_KNOWN_NETWORKS
+        value: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,100.64.0.0/10,fc00::/7"

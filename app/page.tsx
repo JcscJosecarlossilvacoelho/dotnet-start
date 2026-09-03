@@ -1,3 +1,6 @@
+// Vinext/Codex development preview of the marketing homepage. Production is the
+// Blazor app in components/Pages/Home.razor — keep the install command and
+// repository URL in sync with components/Pages/Skills.razor.
 import { ArrowRight, BookOpen, Bot, Boxes, Check, Code2, GitFork, Heart, Layers3, PackageOpen, Rocket, Sparkles, Terminal } from "lucide-react";
 
 const repositoryUrl = "https://github.com/JcscJosecarlossilvacoelho/dotnet-start";
@@ -41,7 +44,7 @@ export default function Home() {
             <a href="#stack"><span className="guide-number">02</span><span className="guide-icon"><Layers3 size={19} /></span><span><small>CHOOSE</small><strong>A recommended stack</strong><em>Good defaults, clearly explained</em></span><ArrowRight size={17} /></a>
             <a href="#community"><span className="guide-number">03</span><span className="guide-icon"><Bot size={19} /></span><span><small>BUILD</small><strong>Context for your agent</strong><em>Skills for Claude, Codex &amp; more</em></span><ArrowRight size={17} /></a>
           </div>
-          <div className="guide-command"><span>❯</span><code>npx skills add dotnet-start</code><span className="guide-ready"><Check size={13} /> ready</span></div>
+          <div className="guide-command"><span>❯</span><code>npx skills add JcscJosecarlossilvacoelho/dotnet-start</code><span className="guide-ready"><Check size={13} /> ready</span></div>
         </div>
       </section>
 

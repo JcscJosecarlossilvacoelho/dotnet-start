@@ -77,8 +77,10 @@ grep -rhoE '(href|src)="[^"]*\.[a-z0-9]{10}\.(css|js)"' "$OUT" \
 curl -sf "$BASE/search-index.json" -o "$OUT/search-index.json"
 curl -sf "$BASE/sitemap.txt" -o "$OUT/sitemap.txt"
 
-# A page that does not exist should still look like the site.
-curl -sf "$BASE/docs/this-route-does-not-exist" -o "$OUT/404.html"
+# A page that does not exist should still look like the site. It answers with a
+# real 404 status, so this is the one fetch that must not use curl's --fail.
+curl -s "$BASE/docs/this-route-does-not-exist" -o "$OUT/404.html"
+test -s "$OUT/404.html"
 
 echo "==> $count pages -> $OUT"
 du -sh "$OUT"

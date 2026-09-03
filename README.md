@@ -47,10 +47,13 @@ Requires the .NET 10 SDK.
 
 ```bash
 dotnet restore
+dotnet test
 dotnet run --project dotnet-start.csproj
 ```
 
-The UI is a Blazor Web App with interactive server components. Its main routes are `/`, `/docs`, and `/skills`.
+The published site is the Blazor app in `components/Pages/`. Its main routes are `/`, `/docs`, and `/skills`.
+
+`app/` is a Vinext/Codex development preview of the marketing homepage. It is not what Vercel, the container, or `dotnet run` serve. If you change an install command or a repository URL there, change it in `components/Pages/` too — that is the source of truth.
 
 ## How the documentation works
 
@@ -151,12 +154,15 @@ docker run -p 8080:8080 ghcr.io/<owner>/dotnet-start:latest
 
 - **Bind to `$PORT`.** Render injects it (10000 by default) and scans for it;
   a container that hardcodes 8080 fails with `Port scan timeout reached`.
-  `Program.cs` picks it up automatically.
+  `Program.cs` picks it up automatically. Presence of `PORT` only changes the
+  bind address; it does not trust `X-Forwarded-*`.
 - **Health check `/healthz`.** Set it on the service, or let the blueprint do it.
 - **Do not force HTTPS in the container.** Render terminates TLS at its edge and
-  forwards plain HTTP, so `UseHttpsRedirection` has no port to redirect to. The
-  app detects this and trusts `X-Forwarded-Proto` instead — which is also what
-  lets the Blazor circuit negotiate `wss://` rather than `ws://`.
+  forwards plain HTTP, so `UseHttpsRedirection` has no port to redirect to.
+- **Opt in to forwarded headers.** The blueprint sets `FORWARDED_HEADERS_ENABLED`
+  and `FORWARDED_HEADERS_KNOWN_NETWORKS` to the private ranges Render's proxy
+  originates from, so `X-Forwarded-Proto` is taken from the edge and not from
+  an arbitrary client.
 
 Render's free instances spin down when idle. That drops the SignalR circuit of
 anyone reading, so use a paid instance for anything public.

@@ -6,14 +6,8 @@
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Page not found · .NET Start</PageTitle>
         <LayoutView Layout="typeof(MainLayout)">
-            <main class="empty-page shell">
-                <p class="eyebrow">404 / unknown route</p>
-                <h1>This page has not<br />been compiled yet.</h1>
-                <p>Head home and pick another path.</p>
-                <a class="button button-primary" href="/">Back to home <Icon Name="arrow-right" /></a>
-            </main>
+            <NotFoundPage />
         </LayoutView>
     </NotFound>
 </Router>

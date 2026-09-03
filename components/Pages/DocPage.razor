@@ -75,6 +75,9 @@ else
 @code {
     [Parameter] public string? Slug { get; set; }
 
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
     private DocEntry? Document { get; set; }
     private DocEntry? Previous { get; set; }
     private DocEntry? Next { get; set; }
@@ -93,6 +96,7 @@ else
         if (Document is null)
         {
             Previous = Next = null;
+            NotFoundStatus.Mark(HttpContext);
             return;
         }
 

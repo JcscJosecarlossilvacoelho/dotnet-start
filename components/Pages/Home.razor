@@ -5,47 +5,48 @@
 
 <main>
     <section class="hero shell">
-        <div class="hero-orbit orbit-one"></div>
-        <div class="hero-orbit orbit-two"></div>
         <div class="hero-copy">
             <div class="status-pill"><span></span> Open source · community reviewed</div>
-            <h1>A clear path<br />through <em>.NET</em>.</h1>
+            <h1>A clear path through <em>.NET</em>.</h1>
             <p>Practical docs, one recommended stack, and trusted context for coding agents — everything you need to go from <code>dotnet new</code> to production without the guesswork.</p>
-            <div class="hero-install">
-                <CodeBlock Code="dotnet new webapi -n MyApp" Label="GET STARTED" />
-            </div>
             <div class="hero-actions">
                 <a class="button button-primary" href="/docs">Read the docs <Icon Name="arrow-right" /></a>
                 <a class="button button-ghost" href="https://github.com/JcscJosecarlossilvacoelho/dotnet-start"><Icon Name="github" /> GitHub</a>
             </div>
         </div>
 
-        <div class="hero-workbench" aria-label="Preview of the documentation experience">
-            <div class="workbench-top">
-                <div class="window-dots"><span></span><span></span><span></span></div>
-                <span>docs / start / getting-started.md</span>
-                <span class="branch-label"><Icon Name="branch" /> main</span>
+        <div class="hero-route" aria-label="A clear route from an idea to a shipped .NET product">
+            <div class="route-glow"></div>
+            <svg class="route-line" viewBox="0 0 1080 250" role="img" aria-hidden="true" preserveAspectRatio="none">
+                <path class="route-track" d="M26 176 C 190 176, 170 55, 354 62 S 530 206, 716 176 S 864 52, 1052 80" />
+                <path class="route-progress" d="M26 176 C 190 176, 170 55, 354 62 S 530 206, 716 176 S 864 52, 1052 80" />
+            </svg>
+
+            <div class="route-node node-idea">
+                <span class="node-dot"></span>
+                <small>01 · START</small>
+                <b>Idea</b>
             </div>
-            <div class="workbench-body">
-                <aside>
-                    <span class="tree-title">START</span>
-                    <b><span>01</span> First endpoint</b>
-                    <span><i>02</i> Database</span>
-                    <span><i>03</i> Auth</span>
-                    <span class="tree-title second">SHIP</span>
-                    <span><i>04</i> Aspire</span>
-                    <span><i>05</i> Production</span>
-                </aside>
-                <div class="workbench-document">
-                    <div class="doc-meta"><span>GUIDE · 6 MIN</span><span class="verified"><Icon Name="check" /> Community reviewed</span></div>
-                    <h2>Your first<br />endpoint.</h2>
-                    <p>From zero to a typed, testable API that is ready to grow.</p>
-                    <CodeBlock Code="dotnet new webapi -n MyApp" Label="TERMINAL" />
-                    <a class="agent-prompt" href="/docs/start/getting-started">
-                        <div><Icon Name="wand" /><span><b>Build this with an agent</b><small>Prompt for Claude or Codex</small></span></div>
-                        <Icon Name="arrow-right" />
-                    </a>
-                </div>
+            <div class="route-node node-code">
+                <span class="node-dot"></span>
+                <small>02 · BUILD</small>
+                <b>C#</b>
+            </div>
+            <div class="route-node node-api">
+                <span class="node-dot"></span>
+                <small>03 · CONNECT</small>
+                <b>API</b>
+            </div>
+            <div class="route-node node-ship">
+                <span class="node-dot"></span>
+                <small>04 · SHIP</small>
+                <b>Production</b>
+            </div>
+
+            <div class="route-command">
+                <span class="route-prompt">›</span>
+                <code>dotnet new webapi -n MyApp</code>
+                <span class="route-ready"><i></i> ready</span>
             </div>
         </div>
     </section>
