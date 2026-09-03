@@ -1,0 +1,59 @@
+@namespace DotnetStart.Components.Pages
+@page "/docs"
+@inject DotnetStart.Content.DocsLibrary Library
+
+<PageTitle>Docs · .NET Start</PageTitle>
+
+<main class="docs-shell shell">
+    <DocsNav />
+
+    <article class="doc-article">
+        <div class="doc-breadcrumb"><a href="/docs">Docs</a><span>/</span><b>Index</b></div>
+        <header class="article-header">
+            <div class="doc-meta">
+                <span>REFERENCE · @Library.AllDocuments.Count PAGES</span>
+                <span class="verified"><Icon Name="check" /> Community owned</span>
+            </div>
+            <h1>The .NET<br />reference.</h1>
+            <p>
+                Documentation for the whole platform: the language, the runtime, the web stack, data access,
+                UI, testing, operations, and architecture. Written to explain how .NET works, not only which
+                command to type. Every page is Markdown in <code>docs/</code> — edit it and open a pull request.
+            </p>
+            <div class="article-actions">
+                <a href="https://github.com/JcscJosecarlossilvacoelho/dotnet-start/tree/main/docs"><Icon Name="branch" /> Edit the docs</a>
+                <span>@Library.Sections.Count sections</span>
+            </div>
+        </header>
+
+        @foreach (var group in Library.Sections)
+        {
+            <section class="article-section doc-index-section" id="@group.Id">
+                <span class="step-number">@group.Label</span>
+                @if (!string.IsNullOrWhiteSpace(group.Description))
+                {
+                    <p>@group.Description</p>
+                }
+                <div class="doc-index-grid">
+                    @foreach (var doc in group.Documents)
+                    {
+                        <a class="doc-index-card" href="@doc.Href">
+                            <b>@doc.Title</b>
+                            <span>@doc.Description</span>
+                            <i>Read <Icon Name="arrow-right" /></i>
+                        </a>
+                    }
+                </div>
+            </section>
+        }
+    </article>
+
+    <aside class="docs-toc">
+        <p>SECTIONS</p>
+        @foreach (var group in Library.Sections)
+        {
+            <a href="#@group.Id">@group.Title</a>
+        }
+        <DocsFeedback Slug="index" />
+    </aside>
+</main>

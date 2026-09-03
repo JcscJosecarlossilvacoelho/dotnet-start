@@ -1,9 +1,4 @@
-node_modules
-.sites-runtime
-.wrangler
-bin
-obj
-dist
-.next
-tests
-*.log
+# Nothing here is uploaded: the workflow deploys the prebuilt dist/ in
+# .vercel/output with `vercel deploy --prebuilt`.
+*
+!.vercel/output

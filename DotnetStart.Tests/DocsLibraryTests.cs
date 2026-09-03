@@ -1,4 +1,4 @@
-using DotnetStart.Docs;
+using DotnetStart.Content;
 
 namespace DotnetStart.Tests;
 

@@ -1,0 +1,93 @@
+@namespace DotnetStart.Components.Pages
+@page "/skills/{Name}"
+@inject SkillsLibrary Library
+
+@if (Skill is null)
+{
+    <PageTitle>Missing skill · .NET Start</PageTitle>
+    <main class="empty-page shell">
+        <p class="eyebrow">SKILLS / NOT FOUND</p>
+        <h1>This skill is not here yet.</h1>
+        <p>Every skill is a <code>SKILL.md</code> under <code>skills/</code>. Add it and open a pull request — or head back to the catalog.</p>
+        <a class="button button-primary" href="/skills">Back to skills <Icon Name="arrow-right" /></a>
+    </main>
+}
+else
+{
+    <PageTitle>@Skill.Name · Skills · .NET Start</PageTitle>
+    <main class="skill-shell shell">
+        <article class="doc-article">
+            <div class="doc-breadcrumb">
+                <a href="/skills">Skills</a><span>/</span>
+                <b>@Skill.Name</b>
+            </div>
+            <header class="article-header">
+                <div class="doc-meta">
+                    <span>SKILL</span>
+                    <span class="verified"><Icon Name="check" /> Community owned</span>
+                </div>
+                <h1 class="skill-title">@Skill.Name</h1>
+                @if (!string.IsNullOrWhiteSpace(Skill.Description))
+                {
+                    <p>@Skill.Description</p>
+                }
+                <CodeBlock Code="@Skill.InstallCommand" Label="INSTALL" Class="skill-install-block" />
+                <div class="article-actions">
+                    <a href="@Skill.EditUrl"><Icon Name="branch" /> View on GitHub</a>
+                    <span>@Skill.RelativePath</span>
+                </div>
+            </header>
+
+            <div class="markdown-body">
+                @((MarkupString)Skill.Html)
+            </div>
+
+            <nav class="doc-pager" aria-label="Adjacent skills">
+                @if (Previous is not null)
+                {
+                    <a href="@Previous.Href"><small>PREVIOUS</small><b>@Previous.Name</b></a>
+                }
+                else
+                {
+                    <a href="/skills"><small>CATALOG</small><b>All skills</b></a>
+                }
+                @if (Next is not null)
+                {
+                    <a class="next" href="@Next.Href"><small>NEXT</small><b>@Next.Name</b></a>
+                }
+            </nav>
+        </article>
+
+        <aside class="docs-toc">
+            <p>ON THIS PAGE</p>
+            @foreach (var heading in Skill.Headings)
+            {
+                <a href="#@heading.Id">@heading.Text</a>
+            }
+        </aside>
+    </main>
+}
+
+@code {
+    [Parameter] public string? Name { get; set; }
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private SkillEntry? Skill { get; set; }
+    private SkillEntry? Previous { get; set; }
+    private SkillEntry? Next { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Skill = Library.Find(Name);
+        if (Skill is null)
+        {
+            Previous = Next = null;
+            NotFoundStatus.Mark(HttpContext);
+            return;
+        }
+
+        (Previous, Next) = Library.Neighbours(Skill);
+    }
+}

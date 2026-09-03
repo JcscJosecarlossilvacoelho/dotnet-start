@@ -1,3 +1,5 @@
+using DotnetStart.Hosting;
+
 namespace DotnetStart.Tests;
 
 public sealed class SiteCopyTests
@@ -5,17 +7,15 @@ public sealed class SiteCopyTests
     public const string InstallCommand = "npx skills add JcscJosecarlossilvacoelho/dotnet-start";
 
     [Fact]
-    public void Preview_homepage_uses_the_same_install_command_as_the_Blazor_site()
+    public void The_catalog_and_the_readme_advertise_the_same_install_command()
     {
         var root = RepoRoot.Find();
-        var preview = File.ReadAllText(Path.Combine(root, "app", "page.tsx"));
-        var skills = File.ReadAllText(Path.Combine(root, "components", "Pages", "Skills.razor"));
+        var skills = File.ReadAllText(Path.Combine(root, "Components", "Pages", "Skills.razor"));
         var readme = File.ReadAllText(Path.Combine(root, "README.md"));
 
-        Assert.Contains(InstallCommand, preview);
         Assert.Contains(InstallCommand, skills);
         Assert.Contains(InstallCommand, readme);
-        Assert.DoesNotMatch(@"npx skills add (?!JcscJosecarlossilvacoelho/)dotnet-start", preview);
+        Assert.DoesNotMatch(@"npx skills add (?!JcscJosecarlossilvacoelho/)dotnet-start", skills);
     }
 
     [Fact]

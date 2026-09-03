@@ -38,13 +38,11 @@ Every practical guide should contain:
 
 ## Tests
 
-C# behaviour lives in `DotnetStart.Tests`. After changing `docs/DocsLibrary.cs`, forwarded-header setup, or a Razor page that sets an HTTP status, run:
+C# behaviour lives in `DotnetStart.Tests`. After changing `Content/DocsLibrary.cs`, forwarded-header setup, or a Razor page that sets an HTTP status, run:
 
 ```bash
 dotnet test
 ```
-
-The Vinext preview under `app/` is not the published site. Do not treat `npm test` as coverage of the Blazor app.
 
 ## Skills
 

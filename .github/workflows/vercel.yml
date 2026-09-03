@@ -32,6 +32,7 @@ jobs:
           test -s dist/search-index.json
           test -s dist/404.html
           grep -q 'markdown-body' dist/docs/start/what-is-dotnet/index.html
+          grep -q 'markdown-body' dist/skills/aspnet-core/index.html
 
       - id: guard
         run: echo "configured=${{ secrets.VERCEL_TOKEN != '' }}" >> "$GITHUB_OUTPUT"

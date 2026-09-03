@@ -1,6 +1,6 @@
-using DotnetStart;
+using DotnetStart.Hosting;
 using DotnetStart.Components;
-using DotnetStart.Docs;
+using DotnetStart.Content;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseStaticWebAssets();
@@ -114,7 +114,8 @@ app.MapRazorComponents<App>();
 
 // Before the first request, not during it.
 app.Services.GetRequiredService<DocsLibrary>().Warm();
-app.Services.GetRequiredService<SkillsLibrary>().Warm();
+// Constructing the singleton is the load: SkillsLibrary reads in its constructor.
+app.Services.GetRequiredService<SkillsLibrary>();
 
 app.Run();
 

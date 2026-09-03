@@ -35,7 +35,7 @@ jobs:
             curl -sf -o /dev/null http://127.0.0.1:5199/docs && break
             sleep 1
           done
-          for path in / /skills /docs /docs/start/what-is-dotnet /search-index.json /sitemap.txt; do
+          for path in / /skills /skills/aspnet-core /docs /docs/start/what-is-dotnet /search-index.json /sitemap.txt; do
             code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:5199$path")
             echo "$path -> $code"
             [ "$code" = "200" ] || exit 1

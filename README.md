@@ -51,9 +51,22 @@ dotnet test
 dotnet run --project dotnet-start.csproj
 ```
 
-The published site is the Blazor app in `components/Pages/`. Its main routes are `/`, `/docs`, and `/skills`.
+The site is one ASP.NET Core project — no Node, no build step of its own. Its main
+routes are `/`, `/docs`, and `/skills`.
 
-`app/` is a Vinext/Codex development preview of the marketing homepage. It is not what Vercel, the container, or `dotnet run` serve. If you change an install command or a repository URL there, change it in `components/Pages/` too — that is the source of truth.
+```
+Program.cs            # hosting, endpoints, the sitemap the crawler walks
+Components/           # the Blazor UI
+  Pages/              #   one file per route
+  Shared/             #   search, code blocks, icons, feedback
+Content/              # the C# that reads docs/ and skills/ and renders Markdown
+Hosting/              # forwarded headers, 404 status
+docs/                 # the documentation, Markdown only
+skills/               # the agent skills, Markdown only
+wwwroot/              # stylesheet, script, fonts
+scripts/prerender.sh  # crawls the running site to static HTML
+DotnetStart.Tests/    # xUnit
+```
 
 ## How the documentation works
 
@@ -116,17 +129,19 @@ bash scripts/prerender.sh          # -> dist/
 
 That publishes the app, boots it, walks `/sitemap.txt`, and writes every route to
 `dist/<route>/index.html` along with the assets, `search-index.json`, and a
-`404.html`. The result is ~76 pages that need no server at all.
+`404.html`. The result is ~85 pages that need no server at all.
 
 `.github/workflows/vercel.yml` does this on every push to `main` and uploads the
 result with `vercel deploy --prebuilt` — Vercel's build image has no .NET SDK, so
-the crawl happens in CI. It stays skipped until the secrets exist:
+the crawl happens in CI. It reads three encrypted repository secrets and stays
+skipped, with a note in the run summary, until they exist:
 
 ```bash
-# VERCEL_ORG_ID and VERCEL_PROJECT_ID are already set.
-# A Vercel personal token is account-wide, so mint it deliberately:
+# A Vercel personal token is account-wide, so mint it deliberately.
 vercel tokens add dotnet-start-ci
-gh secret set VERCEL_TOKEN
+gh secret set VERCEL_TOKEN                     # paste the token, never commit it
+gh secret set VERCEL_ORG_ID                    # both ids are in .vercel/project.json
+gh secret set VERCEL_PROJECT_ID                # after `vercel link` (git-ignored)
 ```
 
 ### Container
